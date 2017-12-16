@@ -1,7 +1,8 @@
-package com.sw.kotlin.tips
+package com.sw.kotlin
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.sw.kotlin.tips.R
 
 class MainActivity : AppCompatActivity() {
 
