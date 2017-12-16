@@ -3,11 +3,61 @@
 汇总Kotlin相对于Java的优势以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个总结的小点tip都有详细的说明和案例代码。
 
 
-## Tip1-函数默认参数避免函数
+## Tip1-更简洁的字符串
 
 详见案例代码[KotlinTip1](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip1/KotlinTip1.kt)
 
-
+Kotlin中的字符串基本Java中的类似，有一点区别是加入了三个引号"""来方便长篇字符的编写。
+而在Java中，这些都需要转义，先看看java中的式例
+```java
+    public void testString1() {
+        String str1 = "abc";
+        String str2 = "line1\n" +
+                "line2\n" +
+                "line3";
+        String js = "function myFunction()\n" +
+                "{\n" +
+                "    document.getElementById(\"demo\").innerHTML=\"My First JavaScript Function\";\n" +
+                "}";
+        System.out.println(str1);
+        System.out.println(str2);
+        System.out.println(js);
+    }
+```
+kotlin除了有单个双引号的字符串，还对字符串的加强，引入了**三个引号**，"""中可以包含换行、反斜杠等等特殊字符：
+```kotlin
+/*
+* kotlin对字符串的加强，三个引号"""中可以包含换行、反斜杠等等特殊字符
+* */
+fun testString() {
+    val str1 = "abc"
+    val str2 = """line1\n
+        line2
+        line3
+        """
+    val js = """
+        function myFunction()
+        {
+            document.getElementById("demo").innerHTML="My First JavaScript Function";
+        }
+        """.trimIndent()
+    println(str1)
+    println(str2)
+    println(js)
+}
+```
+同时，Kotlin中引入了**字符串模版**，方便字符串的拼接，可以用$符号拼接变量和表达式
+```kotlin
+/*
+* kotlin字符串模版，可以用$符号拼接变量和表达式
+* */
+fun testString2() {
+    val strings = arrayListOf("abc", "efd", "gfg")
+    println("First content is $strings")
+    println("First content is ${strings[0]}")
+    println("First content is ${if (strings.size > 0) strings[0] else "null"}")
+}
+```
 
 ## Tip2-Kotlin中大多数控制结构都是表达式
 
@@ -53,7 +103,7 @@ public int max2(int a, int b) {
     return a > b ? a : b;
 }
 ```
-上面是java中的三元运算符，kotlin中if是表达式有值，完全可以替代，**故kotlin中已没有三元运算符了**，用if来替代
+上面是java中的三元运算符，kotlin中if是表达式有值，完全可以替代，**故kotlin中已没有三元运算符了**，用if来替代。
 上面的max函数还可以简化成下面的形式
 ```kotlin
 /*
@@ -66,7 +116,7 @@ fun max2(a: Int, b: Int) = if (a > b) a else b
 Kotlin中的when非常强大，完全可以取代Java中的switch和if/else，同时，**when也是表达式**，when的每个分支的最后一行为当前分支的值
 先看一下java中的switch
 ```java
-/*
+    /*
     * java中的switch
     * */
     public String getPoint(char grade) {
@@ -100,7 +150,7 @@ fun getPoint(grade: Char) = when (grade) {
 ```
 同样的，when语句还可以取代java中的if/else if，其是表达式有值，并且更佳简洁
 ```java
-/*
+    /*
     * java中的if else
     * */
     public String getPoint2(Integer point) {

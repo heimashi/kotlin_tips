@@ -1,6 +1,7 @@
 package com.sw.kotlin.tip2;
 
 
+
 public class JavaExample2 {
 
     /*
@@ -38,6 +39,7 @@ public class JavaExample2 {
                 return "UN_KNOW";
         }
     }
+
 
     /*
     * java中的if else

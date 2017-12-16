@@ -1,3 +1,5 @@
+@file:JvmName("Tip2Test")
+
 package com.sw.kotlin.tip2
 
 
