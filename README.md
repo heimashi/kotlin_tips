@@ -1,6 +1,6 @@
 # 怎么用Kotlin去提高生产力：Kotlin Tips
 
-汇总Kotlin相对于Java的优势以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个总结的小点tip都有详细的说明和案例代码。
+汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个小点tip都有详细的说明和案例代码，争取把每个tip弄得清楚易懂。
 
 
 ## Tip1-更简洁的字符串
@@ -615,7 +615,7 @@ fun saveUser3(user: User) {
         }
     }
 ```
-这段代码需要70行左右，而如果用kotlin，只需要一行代码将可以做到。
+这段代码Java需要70行左右，而如果用kotlin，只需要一行代码将可以做到。
 ```kotlin
 /*
 * Kotlin会为类的参数自动实现get set方法
@@ -629,7 +629,79 @@ data class User2(val name: String, val age: Int, val gender: Int, var address: S
 ```
 对于Kotlin中的类，会为它的参数自动实现get set方法。而如果加上data关键字，还会自动生成equals hashcode toString。原理其实数据类中的大部分代码都是模版代码，Kotlin聪明的将这个模版代码的实现放在了编译器处理的阶段。
 
-## Tip-
+## Tip9-用类委托来快速实现装饰器模式
+
+```kotlin
+/*
+* 常见的装饰器模式，为了修改部分的函数，却需要实现所有的接口函数
+* */
+class CountingSet<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : MutableCollection<T> {
+    override val size: Int
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
+    override fun contains(element: T): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun containsAll(elements: Collection<T>): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun isEmpty(): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun add(element: T): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun addAll(elements: Collection<T>): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun clear() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun iterator(): MutableIterator<T> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun remove(element: T): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun removeAll(elements: Collection<T>): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun retainAll(elements: Collection<T>): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+}
+```
+
+
+```kotlin
+/*
+* 通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了
+* */
+class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : MutableCollection<T> by innerSet {
+
+    var objectAdded = 0
+
+    override fun add(element: T): Boolean {
+        objectAdded++
+        return innerSet.add(element)
+    }
+
+    override fun addAll(elements: Collection<T>): Boolean {
+        objectAdded += elements.size
+        return innerSet.addAll(elements)
+    }
+}
+```
 
 
 
