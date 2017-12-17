@@ -540,8 +540,94 @@ fun saveUser3(user: User) {
 }
 ```
 
-## Tip-
+## Tip8-使用数据类来快速实现model类
+在java中要声明一个model类需要实现很多的代码，首先需要将变量声明为private，然后需要实现get和set方法，还要实现对应的hashcode equals toString方法等，如下所示：
+```java
+    public static class User{
 
+        private String name;
+        private int age;
+        private int gender;
+        private String address;
+        
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        public int getGender() {
+            return gender;
+        }
+
+        public void setGender(int gender) {
+            this.gender = gender;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        @Override
+        public String toString() {
+            return "User{" +
+                    "name='" + name + '\'' +
+                    ", age=" + age +
+                    ", gender=" + gender +
+                    ", address='" + address + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            User user = (User) o;
+
+            if (age != user.age) return false;
+            if (gender != user.gender) return false;
+            if (name != null ? !name.equals(user.name) : user.name != null) return false;
+            return address != null ? address.equals(user.address) : user.address == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = name != null ? name.hashCode() : 0;
+            result = 31 * result + age;
+            result = 31 * result + gender;
+            result = 31 * result + (address != null ? address.hashCode() : 0);
+            return result;
+        }
+    }
+```
+这段代码需要70行左右，而如果用kotlin，只需要一行代码将可以做到。
+```kotlin
+/*
+* Kotlin会为类的参数自动实现get set方法
+* */
+class User(val name: String, val age: Int, val gender: Int, var address: String)
+
+/*
+* 用data关键词来声明一个数据类，除了会自动实现get set，还会自动生成equals hashcode toString
+* */
+data class User2(val name: String, val age: Int, val gender: Int, var address: String)
+```
+对于Kotlin中的类，会为它的参数自动实现get set方法。而如果加上data关键字，还会自动生成equals hashcode toString。原理其实数据类中的大部分代码都是模版代码，Kotlin聪明的将这个模版代码的实现放在了编译器处理的阶段。
 
 ## Tip-
 
