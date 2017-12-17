@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.sw.kotlin.tip6.KotlinTip6"/>
     </application>
 
 </manifest>

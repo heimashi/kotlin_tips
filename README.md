@@ -424,13 +424,64 @@ fun testLateInit() {
 ```
 #### by lazy 和 lateinit 的区别
 - by lazy 修饰val的变量
-- lateinit修饰var的变量，且变量是非空的类型
+- lateinit 修饰var的变量，且变量是非空的类型
 
-## Tip-不用再手写findViewById
+## Tip6-不用再手写findViewById
+在Android的View中，会有很多代码是在声明一个View，然后通过findViewById后从xml中实例化赋值给对应的View。在kotlin中可以完全解放出来了，不用再手写findViewById。步骤如下：
+- 步骤1，在项目的gradle中 apply plugin: 'kotlin-android-extensions'
+- 步骤2，按照原来的习惯书写布局xml文件
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tip6_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/tip6_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-## Tip-
+    <Button
+        android:id="@+id/tip6_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+```
+- 步骤3，在java代码中import对应的布局就可以开始使用了，View不用提前声明，插件会自动根据布局的id生成对应的View
+```kotlin
+import com.sw.kotlin.tips.R
+/*
+* 导入插件生成的View
+* */
+import kotlinx.android.synthetic.main.activity_tip6.*
+
+class KotlinTip6 : Activity(){
+
+    /*
+    * 自动根据layout的id生成对应的view
+    * */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_tip6)
+        tip6_tv.setText("Auto find view for TextView")
+        tip6_img.setImageBitmap(null)
+        tip6_btn.setOnClickListener{
+            //todo sth
+        }
+    }
+
+}
+```
+像上面代码这样，Activity里的三个View自动生成了，不用再去声明，然后findViewById，然后转型赋值，是不是减少了很多没必要的代码，让代码非常的干净。
+
+## Tip7-
 
 
 
