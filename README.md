@@ -166,7 +166,7 @@ fun getPoint(grade: Char) = when (grade) {
         }
     }
 ```
-再看看kotlin的版本，只需要6行代码
+再看看kotlin的版本，使用**不带参数的when**，只需要6行代码
 ```kotlin
 /*
 * kotlin中，when是表达式，可以取代java的if/else，when的每个分支的最后一行为当前分支的值
@@ -179,20 +179,76 @@ fun getPoint2(grade: Int) = when {
 }
 ```
 
-## Tip3-
+## Tip3-更好调用的函数：显示参数名/默认参数值
+Kotlin的函数更加好调用，主要是表现在两个方面：1，显示的标示参数名，可以方便代码阅读；2，函数可以有默认参数值，可以大大减少Java中的函数重载。
+例如现在需要实现一个工具函数，打印列表的内容：
+```kotlin
+/*
+* 打印列表的内容
+* */
+fun <T> joinToString(collection: Collection<T>,
+                     separator: String,
+                     prefix: String,
+                     postfix: String): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in collection.withIndex()) {
+        if (index > 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+/*
+* 测试
+* */
+fun printList() {
+    val list = listOf(2, 4, 0)
+    /*不标明参数名*/
+    println(joinToString(list, " - ", "[", "]"))
+    /*显示的标明参数名称*/
+    println(joinToString(list, separator = " - ", prefix = "[", postfix = "]"))
+}
+```
+如上面的代码所示，函数joinToString想要打印列表的内容，需要传人四个参数：列表、分隔符、前缀和后缀。
+由于参数很多，在后续使用该函数的时候不是很直观的知道每个参数是干什么用的，这时候可以显示的标明参数名称，增加代码可读性。
+同时，定义函数的时候还可以给函数默认的参数，如下所示：
+```kotlin
+/*
+* 打印列表的内容，带有默认的参数，可以避免java的函数重载
+* */
+fun <T> joinToString2(collection: Collection<T>,
+                      separator: String = ", ",
+                      prefix: String = "",
+                      postfix: String = ""): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in collection.withIndex()) {
+        if (index > 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+/*
+* 测试
+* */
+fun printList3() {
+    val list = listOf(2, 4, 0)
+    println(joinToString2(list, " - "))
+    println(joinToString2(list, " , ", "["))
+}
+```
+这样有了默认参数后，在使用函数时，如果不传入该参数，默认会使用默认的值，这样可以避免Java中大量的函数重载。
+
+## Tip-扩展函数
 
 
 
-## Tip8-扩展函数
-
-
-
-## tip2-懒加载 by lazy
+## Tip-懒加载 by lazy
 
 
 
 
-## tip3-不用再手写findViewById
+## Tip-不用再手写findViewById
 
 
 
@@ -201,5 +257,5 @@ fun getPoint2(grade: Int) = when {
 
 
 ### 参考文档
-* 《Kotlin Action》
+* 《Kotlin in Action》
 

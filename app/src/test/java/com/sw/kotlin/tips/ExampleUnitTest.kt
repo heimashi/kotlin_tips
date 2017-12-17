@@ -2,6 +2,7 @@ package com.sw.kotlin.tips
 
 import com.sw.kotlin.tip1.JavaExample1
 import com.sw.kotlin.tip1.testString
+import com.sw.kotlin.tip3.printList
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -22,6 +23,12 @@ class ExampleUnitTest {
         testString()
         val j = JavaExample1()
         j.testString1()
+    }
+
+    @Test
+    fun test02(){
+        printList()
+
     }
 
 }
