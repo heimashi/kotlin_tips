@@ -344,7 +344,7 @@ public static final void setLastChar(@NotNull StringBuilder $receiver, char valu
 - 从上面转换的源码其实可以看到**扩展函数和扩展属性适用的地方和缺陷**，有两点：
     - 扩展函数和扩展属性内**只能访问到类的公有方法和属性**，私有的和protected是访问不了的
     - 扩展函数**不能被override**，因为Java中它是静态的函数
-下面再举几个扩展函数的例子，让大家感受一下扩展函数的方便：
+- 下面再举几个扩展函数的例子，让大家感受一下扩展函数的方便：
 ```kotlin
 /*
 * show toast in activity
@@ -383,10 +383,48 @@ val Context.screenHeight
 fun Context.dip2px(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 ```
 
-## Tip-懒加载 by lazy
+## Tip5-懒初始化by lazy 和 延迟初始化lateinit
+#### 懒初始化by lazy
+懒初始化是指推迟一个变量的初始化时机，变量在使用的时候才去实例化，这样会更加的高效。因为我们通常会遇到这样的情况，一个变量直到使用时才需要被初始化，或者仅仅是它的初始化依赖于某些无法立即获得的上下文。
+```kotlin
+/*
+* 懒初始化api实例
+* */
+val purchasingApi: PurchasingApi by lazy {
+    val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(API_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+    retrofit.create(PurchasingApi::class.java)
+}
+```
+像上面的代码，retrofit生成的api实例会在首次使用到的时候才去实例化。需要注意的是by lazy一般只能修饰val不变的对象，不能修饰var可变对象。
+```kotlin
+class User(var name: String, var age: Int)
 
+/*
+* 懒初始化by lazy
+* */
+val user1: User by lazy {
+    User("jack", 15)
+}
+```
 
+#### 延迟初始化lateinit
+另外，对于var的变量，如果类型是非空的，是必须初始化的，不然编译不通过，这时候需要用到lateinit延迟初始化，使用的时候再去实例化。
+```kotlin
+/*
+* 延迟初始化lateinit
+* */
+lateinit var user2: User
 
+fun testLateInit() {
+    user2 = User("Lily", 14)
+}
+```
+#### by lazy 和 lateinit 的区别
+- by lazy 修饰val的变量
+- lateinit修饰var的变量，且变量是非空的类型
 
 ## Tip-不用再手写findViewById
 
@@ -405,4 +443,4 @@ fun Context.dip2px(value: Int): Int = (value * resources.displayMetrics.density)
 
 ### 参考文档
 * 《Kotlin in Action》
-
+* https://savvyapps.com/blog/kotlin-tips-android-development
