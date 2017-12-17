@@ -180,8 +180,10 @@ fun getPoint2(grade: Int) = when {
 ```
 
 ## Tip3-更好调用的函数：显示参数名/默认参数值
+
 Kotlin的函数更加好调用，主要是表现在两个方面：1，显示的**标示参数名**，可以方便代码阅读；2，函数可以有**默认参数值**，可以大大**减少Java中的函数重载**。
 例如现在需要实现一个工具函数，打印列表的内容：
+详见案例代码[KotlinTip3](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip3/KotlinTip3.kt)
 ```kotlin
 /*
 * 打印列表的内容
@@ -242,6 +244,7 @@ fun printList3() {
 ## Tip4-扩展函数和属性
 扩展函数和属性是Kotlin非常方便实用的一个功能，它可以让我们随意的扩展第三方的库，你如果觉得别人给的SDK的api不好用，或者不能满足你的需求，这时候你可以用扩展函数完全去自定义。
 例如String类中，我们想获取最后一个字符，String中没有这样的直接函数，你可以用.后声明这样一个扩展函数：
+详见案例代码[KotlinTip4](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/KotlinTip4.kt)
 ```kotlin
 /*
 * 扩展函数
@@ -386,6 +389,7 @@ fun Context.dip2px(value: Int): Int = (value * resources.displayMetrics.density)
 ## Tip5-懒初始化by lazy 和 延迟初始化lateinit
 #### 懒初始化by lazy
 懒初始化是指推迟一个变量的初始化时机，变量在使用的时候才去实例化，这样会更加的高效。因为我们通常会遇到这样的情况，一个变量直到使用时才需要被初始化，或者仅仅是它的初始化依赖于某些无法立即获得的上下文。
+详见案例代码[KotlinTip5](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip5/KotlinTip5.kt)
 ```kotlin
 /*
 * 懒初始化api实例
@@ -428,6 +432,7 @@ fun testLateInit() {
 
 ## Tip6-不用再手写findViewById
 在Android的View中，会有很多代码是在声明一个View，然后通过findViewById后从xml中实例化赋值给对应的View。在kotlin中可以完全解放出来了，不用再手写findViewById。步骤如下：
+详见案例代码[KotlinTip6](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip6/KotlinTip6.kt)
 - 步骤1，在项目的gradle中 apply plugin: 'kotlin-android-extensions'
 - 步骤2，按照原来的习惯书写布局xml文件
 ```xml
@@ -482,7 +487,8 @@ class KotlinTip6 : Activity(){
 像上面代码这样，Activity里的三个View自动生成了，不用再去声明，然后findViewById，然后转型赋值，是不是减少了很多没必要的代码，让代码非常的干净。
 
 ## Tip7-利用局部函数抽取重复代码
-Kotlin中提供了函数的嵌套，在函数内部还可以定义新的函数。这样我们可以在函数中嵌套这些提前的函数，来抽取重复代码。如下面的案例所示
+Kotlin中提供了函数的嵌套，在函数内部还可以定义新的函数。这样我们可以在函数中嵌套这些提前的函数，来抽取重复代码。如下面的案例所示:
+详见案例代码[KotlinTip7](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip7/KotlinTip7.kt)
 ```kotlin
 class User(val id: Int, val name: String, val address: String, val email: String)
 
@@ -542,6 +548,7 @@ fun saveUser3(user: User) {
 
 ## Tip8-使用数据类来快速实现model类
 在java中要声明一个model类需要实现很多的代码，首先需要将变量声明为private，然后需要实现get和set方法，还要实现对应的hashcode equals toString方法等，如下所示：
+详见案例代码[Tip8](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip8)
 ```java
     public static class User{
 
@@ -629,60 +636,75 @@ data class User2(val name: String, val age: Int, val gender: Int, var address: S
 ```
 对于Kotlin中的类，会为它的参数自动实现get set方法。而如果加上data关键字，还会自动生成equals hashcode toString。原理其实数据类中的大部分代码都是模版代码，Kotlin聪明的将这个模版代码的实现放在了编译器处理的阶段。
 
-## Tip9-用类委托来快速实现装饰器模式
 
+## Tip9-用类委托来快速实现装饰器模式
+通过继承的实现容易导致脆弱性，例如如果需要修改其他类的一些行为，这时候Java中的一种策略是采用**装饰器模式**：创建一个新类，实现与原始类一样的接口并将原来的类的实例作为一个成员变量。
+与原始类拥有相同行为的方法不用修改，只需要直接转发给原始类的实例。如下所示：
+详见案例代码[KotlinTip9](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip9/KotlinTip9.kt)
 ```kotlin
 /*
 * 常见的装饰器模式，为了修改部分的函数，却需要实现所有的接口函数
 * */
 class CountingSet<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : MutableCollection<T> {
+
+    var objectAdded = 0
+    
     override val size: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = innerSet.size
+
+    /*
+    * 需要修改的方法
+    * */
+    override fun add(element: T): Boolean {
+        objectAdded++
+        return innerSet.add(element)
+    }
+
+    /*
+    * 需要修改的方法
+    * */
+    override fun addAll(elements: Collection<T>): Boolean {
+        objectAdded += elements.size
+        return innerSet.addAll(elements)
+    }
 
     override fun contains(element: T): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return innerSet.contains(element)
     }
 
     override fun containsAll(elements: Collection<T>): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return innerSet.containsAll(elements)
     }
 
     override fun isEmpty(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun add(element: T): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun addAll(elements: Collection<T>): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return innerSet.isEmpty()
     }
 
     override fun clear() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        innerSet.clear()
     }
 
     override fun iterator(): MutableIterator<T> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return innerSet.iterator()
     }
 
     override fun remove(element: T): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return innerSet.remove(element)
     }
 
     override fun removeAll(elements: Collection<T>): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return innerSet.removeAll(elements)
     }
 
     override fun retainAll(elements: Collection<T>): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return innerSet.retainAll(elements)
     }
 
 }
 ```
-
-
+如上所示，想要修改HashSet的某些行为函数add和addAll，需要实现MutableCollection接口的所有方法，将这些方法转发给innerSet去具体的实现。虽然只需要修改其中的两个方法，其他代码都是模版代码。
+**只要是重复的模版代码，Kotlin这种全新的语法糖就会想办法将它放在编译阶段再去生成。**
+这时候可以用到**类委托by关键字**，如下所示：
 ```kotlin
 /*
 * 通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了
@@ -702,8 +724,15 @@ class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutab
     }
 }
 ```
+通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了，通过类委托将10行代码就可以实现上面接近100行的功能，简洁明了，去掉类模版代码。
+
+## Tip10-
 
 
+## Tip11-
+
+
+## Tip12-
 
 ### 参考文档
 * 《Kotlin in Action》
