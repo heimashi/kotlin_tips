@@ -481,9 +481,64 @@ class KotlinTip6 : Activity(){
 ```
 像上面代码这样，Activity里的三个View自动生成了，不用再去声明，然后findViewById，然后转型赋值，是不是减少了很多没必要的代码，让代码非常的干净。
 
-## Tip7-
+## Tip7-利用局部函数抽取重复代码
+Kotlin中提供了函数的嵌套，在函数内部还可以定义新的函数。这样我们可以在函数中嵌套这些提前的函数，来抽取重复代码。如下面的案例所示
+```kotlin
+class User(val id: Int, val name: String, val address: String, val email: String)
 
+fun saveUser(user: User) {
+    if (user.name.isEmpty()) {
+        throw IllegalArgumentException("Can't save user ${user.id}: empty Name")
+    }
+    if (user.address.isEmpty()) {
+        throw IllegalArgumentException("Can't save user ${user.id}: empty Address")
+    }
+    if (user.email.isEmpty()) {
+        throw IllegalArgumentException("Can't save user ${user.id}: empty Email")
+    }
+    //save to db ...
+}
+```
+上面的代码在判断name、address等是否为空的处理其实很类似。这时候，我们可以利用在函数内部嵌套的声明一个通用的判空函数将相同的代码抽取到一起：
+```kotlin
+/*
+*利用局部函数抽取相同的逻辑，去除重复的代码
+* */
+fun saveUser2(user: User) {
+    fun validate(value: String, fildName: String) {
+        if (value.isEmpty()) {
+            throw IllegalArgumentException("Can't save user ${user.id}: empty $fildName")
+        }
+    }
 
+    validate(user.name, "Name")
+    validate(user.address, "Address")
+    validate(user.email, "Email")
+    //save to db ...
+}
+```
+除了利用嵌套函数去抽取，此时，其实也可以用扩展函数来抽取，如下所示：
+```kotlin
+/*
+* 利用扩展函数抽取逻辑
+* */
+fun User.validateAll() {
+    fun validate(value: String, fildName: String) {
+        if (value.isEmpty()) {
+            throw IllegalArgumentException("Can't save user $id: empty $fildName")
+        }
+    }
+
+    validate(name, "Name")
+    validate(address, "Address")
+    validate(email, "Email")
+}
+
+fun saveUser3(user: User) {
+    user.validateAll()
+    //save to db ...
+}
+```
 
 ## Tip-
 
