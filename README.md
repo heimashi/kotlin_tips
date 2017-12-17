@@ -338,6 +338,50 @@ public static final void setLastChar(@NotNull StringBuilder $receiver, char valu
     $receiver.setCharAt($receiver.length() - 1, value);
 }
 ```
+查看上面的代码可知：对于扩展函数，转化为Java的时候其实就是一个静态的函数，同时这个静态函数的第一个参数就是该类的实例对象，这样把类的实例传人函数以后，函数内部就可以访问到类的公有方法。
+对于扩展属性也类似，获取的扩展属性会转化为一个静态的get函数，同时这个静态函数的第一个参数就是该类的实例对象，设置的扩展属性会转化为一个静态的set函数，同时这个静态函数的第一个参数就是该类的实例对象。
+函数内部可以访问公有的方法和属性。
+- 从上面转换的源码其实可以看到**扩展函数和扩展属性适用的地方和缺陷**，有两点：
+    - 扩展函数和扩展属性内**只能访问到类的公有方法和属性**，私有的和protected是访问不了的
+    - 扩展函数**不能被override**，因为Java中它是静态的函数
+下面再举几个扩展函数的例子，让大家感受一下扩展函数的方便：
+```kotlin
+/*
+* show toast in activity
+* */
+fun Activity.toast(msg: String){
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+}
+
+val Context.inputMethodManager: InputMethodManager?
+    get() = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+/*
+* hide soft input
+* */
+fun Context.hideSoftInput(view: View) {
+    inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+
+/**
+ * screen width in pixels
+ */
+val Context.screenWidth
+    get() = resources.displayMetrics.widthPixels
+
+/**
+ * screen height in pixels
+ */
+val Context.screenHeight
+    get() = resources.displayMetrics.heightPixels
+
+/**
+ * returns dip(dp) dimension value in pixels
+ * @param value dp
+ */
+fun Context.dip2px(value: Int): Int = (value * resources.displayMetrics.density).toInt()
+```
 
 ## Tip-懒加载 by lazy
 
