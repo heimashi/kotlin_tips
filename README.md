@@ -180,7 +180,7 @@ fun getPoint2(grade: Int) = when {
 ```
 
 ## Tip3-更好调用的函数：显示参数名/默认参数值
-Kotlin的函数更加好调用，主要是表现在两个方面：1，显示的标示参数名，可以方便代码阅读；2，函数可以有默认参数值，可以大大减少Java中的函数重载。
+Kotlin的函数更加好调用，主要是表现在两个方面：1，显示的**标示参数名**，可以方便代码阅读；2，函数可以有**默认参数值**，可以大大**减少Java中的函数重载**。
 例如现在需要实现一个工具函数，打印列表的内容：
 ```kotlin
 /*
@@ -239,9 +239,105 @@ fun printList3() {
 ```
 这样有了默认参数后，在使用函数时，如果不传入该参数，默认会使用默认的值，这样可以避免Java中大量的函数重载。
 
-## Tip-扩展函数
+## Tip4-扩展函数和属性
+扩展函数和属性是Kotlin非常方便实用的一个功能，它可以让我们随意的扩展第三方的库，你如果觉得别人给的SDK的api不好用，或者不能满足你的需求，这时候你可以用扩展函数完全去自定义。
+例如String类中，我们想获取最后一个字符，String中没有这样的直接函数，你可以用.后声明这样一个扩展函数：
+```kotlin
+/*
+* 扩展函数
+* */
+fun String.lastChar(): Char = this.get(this.length - 1)
+/*
+*测试
+* */
+fun testFunExtension() {
+    val str = "test extension fun";
+    println(str.lastChar())
+}
+```
+这样定义好lastChar()函数后，之后只需要import进来后，就可以用String类直接调用该函数了，跟调用它自己的方法没有区别。这样可以避免重复代码和一些静态工具类，而且代码更加简洁明了。
+例如我们可以改造上面tip3中的打印列表内容的函数：
+```kotlin
+/*
+* 用扩展函数改造Tip3中的列表打印内容函数
+* */
+fun <T> Collection<T>.joinToString3(separator: String = ", ",
+                                    prefix: String = "",
+                                    postfix: String = ""): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in withIndex()) {
+        if (index > 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
 
+fun printList4() {
+    val list = listOf(2, 4, 0)
+    println(list.joinToString3("/"))
+}
+```
+除了扩展函数，还可以扩展属性，例如我想实现String和StringBuilder通过属性去直接获得最后字符：
+```kotlin
+/*
+* 扩展属性 lastChar获取String的最后一个字符
+* */
+val String.lastChar: Char
+    get() = get(length - 1)
+/*
+* 扩展属性 lastChar获取StringBuilder的最后一个字符
+* */
+var StringBuilder.lastChar: Char
+    get() = get(length - 1)
+    set(value: Char) {
+        setCharAt(length - 1, value)
+    }
+/*
+* 测试
+* */
+fun testExtension(){
+    val s = "abc"
+    println(s.lastChar)
+    val sb = StringBuilder("abc")
+    println(sb.lastChar)
+}
+```
+定义好扩展属性后，之后只需import完了就跟使用自己的属性一样方便了。
 
+#### Why？Kotlin为什么能实现扩展函数和属性这样的特性？
+在Kotlin中要理解一些语法，只要认识到**Kotlin语言最后需要编译为class字节码，Java也是编译为class执行，也就是可以大致理解为Kotlin需要转成Java一样的语法结构**，
+Kotlin就是一种**强大的语法糖**而已，Java不具备的功能Kotlin也不能越界的。
+- 那Kotlin的扩展函数怎么实现的呢？介绍一种万能的办法去理解Kotlin的语法：**将Kotlin代码转化成Java语言**去理解，步骤如下：
+    - 在Android Studio中选择Tools ---> Kotlin ---> Show Kotlin Bytecode 这样就把Kotlin转化为class字节码了
+    - class码阅读不太友好，点击左上角的Decompile就转化为Java
+- 再介绍一个小窍门，在前期对Kotlin语法不熟悉的时候，可以先用Java写好代码，再利用AndroidStudio工具**将Java代码转化为Kotlin代码**，步骤如下：
+    - 在Android Studio中选中要转换的Java代码 ---> 选择Code ---> Convert Java File to Kotlin File
+
+我们看看将上面的扩展函数转成Java后的代码
+```java
+/*
+* 扩展函数会转化为一个静态的函数，同时这个静态函数的第一个参数就是该类的实例对象
+* */
+public static final char lastChar(@NotNull String $receiver) {
+    Intrinsics.checkParameterIsNotNull($receiver, "$receiver");
+    return $receiver.charAt($receiver.length() - 1);
+}
+/*
+* 获取的扩展属性会转化为一个静态的get函数，同时这个静态函数的第一个参数就是该类的实例对象
+* */
+public static final char getLastChar(@NotNull StringBuilder $receiver) {
+    Intrinsics.checkParameterIsNotNull($receiver, "$receiver");
+    return $receiver.charAt($receiver.length() - 1);
+}
+/*
+* 设置的扩展属性会转化为一个静态的set函数，同时这个静态函数的第一个参数就是该类的实例对象
+* */
+public static final void setLastChar(@NotNull StringBuilder $receiver, char value) {
+    Intrinsics.checkParameterIsNotNull($receiver, "$receiver");
+    $receiver.setCharAt($receiver.length() - 1, value);
+}
+```
 
 ## Tip-懒加载 by lazy
 
@@ -252,7 +348,14 @@ fun printList3() {
 
 
 
+## Tip-
 
+
+
+## Tip-
+
+
+## Tip-
 
 
 
