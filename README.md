@@ -941,9 +941,9 @@ fun testApply(context: Context) {
 ## Tip13- 在编译阶段避免掉NullPointerException
 
 NullPointerException是Java程序员非常头痛的一个问题，我们知道Java 中分受检异常和非受检异常，NullPointerException是非受检异常，也就是说NullPointerException不需要显示的去catch住，
-往往在运行期间，程序就可能报出一个NullPointerException然后crash掉，Kotlin作为一门新语言，尝试在编译阶段就把空指针问题显式的标示出来，把问题留在编译阶段，让程序更加健壮。
-- Kotlin中类型分为可空类型和不可空类型，通过？代表可空，不带？代表不可为空
+往往在运行期间，程序就可能报出一个NullPointerException然后crash掉，Kotlin作为一门高效安全的语言，它尝试在编译阶段就把空指针问题显式的检测出来，把问题留在了编译阶段，让程序更加健壮。
 详见案例代码[KotlinTip13](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip13/KotlinTip13.kt)
+- Kotlin中类型分为可空类型和不可空类型，通过？代表可空，不带？代表不可为空
 ```kotlin
 fun testNullType() {
     val a: String = "aa"
@@ -980,12 +980,42 @@ fun testNullType() {
     val user = User()
     user!!.name!!.subSequence(0,5)!!.length
 ```
-
-
+对应一个可空类型，每次对它的访问都需要带上?.判断
 ```kotlin
+val user: User? = User()
 
+    /*
+    * 每次访问都用用?.判断
+    * */
+    user?.name
+    user?.age
+    user?.toString()
 ```
-
+但这样多了很多代码，kotlin做了一些优化，
+```kotlin
+    /*
+    * 或者提前判断是否为空，如果不为空在这个分支里会自动转化为非空类型就可以直接访问了
+    * */
+    if (user != null) {
+        user.name
+        user.age
+        user.toString()
+    }
+```
+通过if提前判断类型是否为空，如果不为空在这个分支里会**自动转化为非空类型**就可以直接访问了。
+#### let语句简化对可空对象对访问
+上面的代码还可以用?.let语句进行，如下所示：
+```kotlin
+    /*
+    * 通过let语句，在?.let之后，如果为空不会有任何操作，只有在非空的时候才会执行let之后的操作
+    * */
+    user?.let {
+        user.name
+        user.age
+        user.toString()
+    }
+```
+通过let语句，在?.let之后，如果为空不会有任何操作，只有在非空的时候才会执行let之后的操作
 
 ## Tip14-
 
