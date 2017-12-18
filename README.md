@@ -726,7 +726,7 @@ class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutab
 ```
 通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了，通过类委托将10行代码就可以实现上面接近100行的功能，简洁明了，去掉了模版代码。
 
-## Tip10-Lambda表达式
+## Tip10-Lambda表达式简化代码
 lambda表达式可以简化我们的代码。以Android中常见的OnClickListener来说明，在Java中我们一遍这么去设置：
 ```java
         TextView textView = new TextView(context);
@@ -796,6 +796,10 @@ lambda提出去之后，函数如果没有其他参数括号可以省略
 ```
 我们再看看如果自己去实现一个带lambda参数的函数应该怎么去定义：
 ```kotlin
+interface OnClickListener {
+    fun onClick()
+}
+
 class View {
     var listener: OnClickListener? = null;
 
@@ -821,8 +825,74 @@ class View {
 ```
 在函数参数中需要声明lambda的类型后，再调用该函数的时候就可以传人一个lambda表达式了。
 
-## Tip11-
+## Tip11-with语句来简化代码
+Kotlin中可以用with语句来省略同一个变量的多次声明，例如下面的函数
+```kotlin
+/*
+*打印字母表函数，在函数内result变量在好几处有使用到
+* */
+fun alphabet(): String {
+    val result = StringBuilder()
+    result.append("START\n")
+    for (letter in 'A'..'Z') {
+        result.append(letter)
+    }
+    result.append("\nEND")
+    return result.toString()
+}
+```
+在上面的函数中，result变量出现了5次，如果用with语句，可以将这5次都不用再出现了，我们来一步一步地看是怎么实现的：
+```kotlin
+/*
+* 通过with语句，将result作为参数传人，在内部就可以通过this来表示result变量了
+* */
+fun alphabet2(): String {
+    val result = StringBuilder()
+    return with(result) {
+        this.append("START\n")
+        for (letter in 'A'..'Z') {
+            this.append(letter)
+        }
+        this.append("\nEND")
+        this.toString()
+    }
+}
+```
+通过with语句，将result作为参数传人，在内部就可以通过this来表示result变量了，而且这个this是可以省略的
 
+```kotlin
+/*
+* 通过with语句，将result参数作为参数，在内部this也可以省略掉
+* */
+fun alphabet3(): String {
+    val result = StringBuilder()
+    return with(result) {
+        append("START\n")
+        for (letter in 'A'..'Z') {
+            append(letter)
+        }
+        append("\nEND")
+        toString()
+    }
+}
+```
+在内部this省略掉后，现在只有一个result了，这个其实也是没必要的，于是出现了下面的最终版本：
+```kotlin
+/*
+* 通过with语句，可以直接将对象传人，省掉对象的声明
+* */
+fun alphabet4(): String {
+    return with(StringBuilder()) {
+        append("START\n")
+        for (letter in 'A'..'Z') {
+            append(letter)
+        }
+        append("\nEND")
+        toString()
+    }
+}
+```
+像上面这样的，我们把同一个变量的声明从5次变为了0次，发现Kotlin的魅力了吧。
 
 ## Tip12-
 
