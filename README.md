@@ -727,6 +727,7 @@ class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutab
 通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了，通过类委托将10行代码就可以实现上面接近100行的功能，简洁明了，去掉了模版代码。
 
 ## Tip10-Lambda表达式简化代码
+详见案例代码[KotlinTip10](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip10/KotlinTip10.kt)
 lambda表达式可以简化我们的代码。以Android中常见的OnClickListener来说明，在Java中我们一遍这么去设置：
 ```java
         TextView textView = new TextView(context);
@@ -827,6 +828,7 @@ class View {
 
 ## Tip11-with语句来简化代码
 Kotlin中可以用with语句来省略同一个变量的多次声明，例如下面的函数
+详见案例代码[KotlinTip11](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip11/KotlinTip11.kt)
 ```kotlin
 /*
 *打印字母表函数，在函数内result变量在好几处有使用到
@@ -894,7 +896,47 @@ fun alphabet4(): String {
 ```
 像上面这样的，我们把同一个变量的声明从5次变为了0次，发现Kotlin的魅力了吧。
 
-## Tip12-
+## Tip12-apply语句来简化代码
+除了用上面的with可以简化同一个变量的多次声明，还可以用apply关键字，我们来改造一下tip11中的函数：
+详见案例代码[KotlinTip12](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip12/KotlinTip12.kt)
+```kotlin
+/*
+* 用apply语句简化代码，在apply的大括号里可以访问类的公有属性和方法
+* */
+fun alphabet5() = StringBuilder().apply {
+    append("START\n")
+    for (letter in 'A'..'Z') {
+        append(letter)
+    }
+    append("\nEND")
+}.toString()
+```
+像上面这样的，通过apply后，在apply的大括号里可以访问类的公有属性和方法。这在对应类的初始化是非常方便的，例如下面的例子
+```kotlin
+/*
+* 用apply语句简化类的初始化，在类实例化的时候，就可以通过apply把需要初始化的步骤全部实现，非常的简洁
+* */
+fun testApply(context: Context) {
+    var imgView = ImageView(context).apply {
+        setBackgroundColor(0)
+        setImageBitmap(null)
+    }
+
+    var textView = TextView(context).apply {
+        text = "content"
+        textSize = 20.0f
+        setPadding(10, 0, 0, 0)
+    }
+    
+    var user = User().apply { 
+        age = 15
+        name = "Jack"
+        val a = address
+        address = "bbb"
+    }
+}
+```
+在类实例化的时候，就可以通过apply把需要初始化的步骤全部实现，非常的简洁
 
 ### 参考文档
 * 《Kotlin in Action》
