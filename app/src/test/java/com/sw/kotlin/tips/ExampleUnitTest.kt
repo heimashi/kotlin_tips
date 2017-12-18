@@ -3,6 +3,7 @@ package com.sw.kotlin.tips
 import com.sw.kotlin.tip1.JavaExample1
 import com.sw.kotlin.tip1.testString
 import com.sw.kotlin.tip11.alphabet
+import com.sw.kotlin.tip14.testOperator
 import com.sw.kotlin.tip3.printList
 import org.junit.Test
 
@@ -42,6 +43,11 @@ class ExampleUnitTest {
             println("this = " + this)
             "ss"
         }.let { println(it) }
+    }
+
+    @Test
+    fun test05(){
+        testOperator()
     }
 
 }

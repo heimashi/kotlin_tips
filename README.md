@@ -1040,14 +1040,58 @@ inline fun <T, R> T.let(block: (T) -> R): R = block(this)
 ```
 通过let语句，在?.let之后，如果为空不会有任何操作，只有在非空的时候才会执行let之后的操作
 
-## Tip14-
+## Tip14- 运算符重载
+
+Kotlin支持对运算符的重载，这对于对一些对象的操作更加灵活直观。以下面对坐标点Point的案例说明怎么去重载运算符：
+详见案例代码[KotlinTip14](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip14/KotlinTip14.kt)
+```kotlin
+class Point(val x: Int, val y: Int) {
+
+    /*
+    * plus函数重载对Point对象的加法运算符
+    * */
+    operator fun plus(other: Point): Point {
+        return Point(x + other.x, y + other.y)
+    }
+
+    /*
+    * minus函数重载对Point对象的减法运算符
+    * */
+    operator fun minus(other: Point): Point {
+        return Point(x - other.x, y - other.y)
+    }
+
+    override fun toString(): String {
+        return "[x:$x, y:$y]"
+    }
+
+}
+```
+如上所示，通过plus函数重载对Point对象的加法运算符，通过minus函数重载对Point对象的减法运算符，然后就可以用+、-号对两个对象进行操作了：
+```kotlin
+fun testOperator() {
+    val point1 = Point(10, 10)
+    val point2 = Point(4, 4)
+    val point3 = point1 + point2
+    println(point3)
+    println(point1 - point2)
+}
+```
+
 
 
 ## Tip15-
 
 
+```kotlin
+
+```
+
 ## Tip16-
 
+```kotlin
+
+```
 
 
 
