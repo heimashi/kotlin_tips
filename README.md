@@ -1042,7 +1042,17 @@ inline fun <T, R> T.let(block: (T) -> R): R = block(this)
 
 ## Tip14- 运算符重载
 
-Kotlin支持对运算符的重载，这对于对一些对象的操作更加灵活直观。以下面对坐标点Point的案例说明怎么去重载运算符：
+Kotlin支持对运算符的重载，这对于对一些对象的操作更加灵活直观。
+
+- 使用operator来修饰plus\minus函数
+- 可重载的二元算术符
+    - A * B  times
+    - A / B  div
+    - A % B  mod
+    - A + B  plus
+    - A - B  minus
+
+以下面对坐标点Point的案例说明怎么去重载运算符：
 详见案例代码[KotlinTip14](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip14/KotlinTip14.kt)
 ```kotlin
 class Point(val x: Int, val y: Int) {
@@ -1080,14 +1090,103 @@ fun testOperator() {
 
 
 
-## Tip15-
+## Tip15- 高阶函数简化代码
 
+- 高阶函数：以另一个函数作为参数或者返回值的函数
+- 函数类型   
+    - (Int, String) -> Unit
+    - 参数类型->返回类型 Unit不能省略
+  
+```kotlin
+    val list = listOf(2, 5, 10)
+    /*
+    * 传人函数来过滤
+    * */
+    println(list.filter { it > 4 })
+      
+    /*
+    * 定义函数类型
+    * */
+    val sum = { x: Int, y: Int -> x + y }
+    val action = { println(42) }
+
+    val sum2: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
+    val action2: () -> Unit = { println(42) }      
+```
+
+#### 函数作为参数
+
+函数作为参数，即高阶函数中，函数的参数可以是一个函数类型，例如要定义一个函数，该函数根据传人的操作函数来对2和3做相应的处理。
+
+```kotlin
+/*
+* 定义对2和3的操作函数
+* */
+fun twoAndThree(operator: (Int, Int) -> Int) {
+    val result = operator(2, 3)
+    println("Result:$result")
+}
+
+fun test03() {
+    twoAndThree { a, b -> a + b }
+    twoAndThree { a, b -> a * b }
+}
+```
+operator是函数类型，函数的具体类型为(Int, Int) -> Int，即输入两个Int返回一个Int值。定义完了后就可以像上面这样使用了。
+再举一个例子，实现String类的字符过滤：
+```kotlin
+/*
+* 函数作为参数，实现String类的字符过滤
+* */
+fun String.filter(predicate: (Char) -> Boolean): String {
+    val sb = StringBuilder()
+    for (index in 0 until length) {
+        val element = get(index)
+        if (predicate(element)) sb.append(element)
+    }
+    return sb.toString()
+}
+
+fun test04() {
+    println("12eafsfsfdbzzsa".filter { it in 'a'..'f' })
+}
+```
+像上面这样predicate是函数类型，它会根据传人的char来判断得到一个Boolean值。
+
+#### 函数作为返回值
+
+函数作为返回值也非常实用，例如我们想
+
+```kotlin
+enum class Delivery {
+    STANDARD, EXPEDITED
+}
+
+/*
+* 根据不同的运输类型返回不同的快递方式
+* */
+fun getShippingCostCalculator(delivery: Delivery): (Int) -> Double {
+    if (delivery == Delivery.EXPEDITED) {
+        return { 6 + 2.1 * it }
+    }
+    return { 1.3 * it }
+}
+
+fun test05(){
+    val calculator1 = getShippingCostCalculator(Delivery.EXPEDITED)
+    val calculator2 = getShippingCostCalculator(Delivery.STANDARD)
+    println("Ex costs ${calculator1(5)}")
+    println("St costs ${calculator2(5)}")
+}
+```
+
+## Tip16-
 
 ```kotlin
 
 ```
 
-## Tip16-
+## Tip17-
 
 ```kotlin
 
