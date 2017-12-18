@@ -3,7 +3,7 @@
 汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个小点tip都有详细的说明和案例代码，争取把每个tip弄得清楚易懂。
 
 
-## Tip1-更简洁的字符串
+## Tip1- 更简洁的字符串
 
 详见案例代码[KotlinTip1](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip1/KotlinTip1.kt)
 
@@ -59,7 +59,7 @@ fun testString2() {
 }
 ```
 
-## Tip2-Kotlin中大多数控制结构都是表达式
+## Tip2- Kotlin中大多数控制结构都是表达式
 
 首先，需要弄清楚一个概念**语句和表达式**，然后会介绍控制结构表达式的优点：**简洁**
 #### 语句和表达式是什么？
@@ -179,7 +179,7 @@ fun getPoint2(grade: Int) = when {
 }
 ```
 
-## Tip3-更好调用的函数：显示参数名/默认参数值
+## Tip3- 更好调用的函数：显示参数名/默认参数值
 
 Kotlin的函数更加好调用，主要是表现在两个方面：1，显示的**标示参数名**，可以方便代码阅读；2，函数可以有**默认参数值**，可以大大**减少Java中的函数重载**。
 例如现在需要实现一个工具函数，打印列表的内容：
@@ -241,7 +241,7 @@ fun printList3() {
 ```
 这样有了默认参数后，在使用函数时，如果不传入该参数，默认会使用默认的值，这样可以避免Java中大量的函数重载。
 
-## Tip4-扩展函数和属性
+## Tip4- 扩展函数和属性
 扩展函数和属性是Kotlin非常方便实用的一个功能，它可以让我们随意的扩展第三方的库，你如果觉得别人给的SDK的api不好用，或者不能满足你的需求，这时候你可以用扩展函数完全去自定义。
 例如String类中，我们想获取最后一个字符，String中没有这样的直接函数，你可以用.后声明这样一个扩展函数：
 详见案例代码[KotlinTip4](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/KotlinTip4.kt)
@@ -386,7 +386,7 @@ val Context.screenHeight
 fun Context.dip2px(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 ```
 
-## Tip5-懒初始化by lazy 和 延迟初始化lateinit
+## Tip5- 懒初始化by lazy 和 延迟初始化lateinit
 #### 懒初始化by lazy
 懒初始化是指推迟一个变量的初始化时机，变量在使用的时候才去实例化，这样会更加的高效。因为我们通常会遇到这样的情况，一个变量直到使用时才需要被初始化，或者仅仅是它的初始化依赖于某些无法立即获得的上下文。
 详见案例代码[KotlinTip5](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip5/KotlinTip5.kt)
@@ -430,7 +430,7 @@ fun testLateInit() {
 - by lazy 修饰val的变量
 - lateinit 修饰var的变量，且变量是非空的类型
 
-## Tip6-不用再手写findViewById
+## Tip6- 不用再手写findViewById
 在Android的View中，会有很多代码是在声明一个View，然后通过findViewById后从xml中实例化赋值给对应的View。在kotlin中可以完全解放出来了，不用再手写findViewById。步骤如下：
 详见案例代码[KotlinTip6](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip6/KotlinTip6.kt)
 - 步骤1，在项目的gradle中 apply plugin: 'kotlin-android-extensions'
@@ -486,7 +486,7 @@ class KotlinTip6 : Activity(){
 ```
 像上面代码这样，Activity里的三个View自动生成了，不用再去声明，然后findViewById，然后转型赋值，是不是减少了很多没必要的代码，让代码非常的干净。
 
-## Tip7-利用局部函数抽取重复代码
+## Tip7- 利用局部函数抽取重复代码
 Kotlin中提供了函数的嵌套，在函数内部还可以定义新的函数。这样我们可以在函数中嵌套这些提前的函数，来抽取重复代码。如下面的案例所示:
 详见案例代码[KotlinTip7](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip7/KotlinTip7.kt)
 ```kotlin
@@ -546,7 +546,7 @@ fun saveUser3(user: User) {
 }
 ```
 
-## Tip8-使用数据类来快速实现model类
+## Tip8- 使用数据类来快速实现model类
 在java中要声明一个model类需要实现很多的代码，首先需要将变量声明为private，然后需要实现get和set方法，还要实现对应的hashcode equals toString方法等，如下所示：
 详见案例代码[Tip8](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip8)
 ```java
@@ -637,7 +637,7 @@ data class User2(val name: String, val age: Int, val gender: Int, var address: S
 对于Kotlin中的类，会为它的参数自动实现get set方法。而如果加上data关键字，还会自动生成equals hashcode toString。原理其实数据类中的大部分代码都是模版代码，Kotlin聪明的将这个模版代码的实现放在了编译器处理的阶段。
 
 
-## Tip9-用类委托来快速实现装饰器模式
+## Tip9- 用类委托来快速实现装饰器模式
 通过继承的实现容易导致脆弱性，例如如果需要修改其他类的一些行为，这时候Java中的一种策略是采用**装饰器模式**：创建一个新类，实现与原始类一样的接口并将原来的类的实例作为一个成员变量。
 与原始类拥有相同行为的方法不用修改，只需要直接转发给原始类的实例。如下所示：
 详见案例代码[KotlinTip9](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip9/KotlinTip9.kt)
@@ -726,7 +726,7 @@ class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutab
 ```
 通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了，通过类委托将10行代码就可以实现上面接近100行的功能，简洁明了，去掉了模版代码。
 
-## Tip10-Lambda表达式简化代码
+## Tip10- Lambda表达式简化代码
 详见案例代码[KotlinTip10](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip10/KotlinTip10.kt)
 lambda表达式可以简化我们的代码。以Android中常见的OnClickListener来说明，在Java中我们一遍这么去设置：
 ```java
@@ -826,7 +826,7 @@ class View {
 ```
 在函数参数中需要声明lambda的类型后，再调用该函数的时候就可以传人一个lambda表达式了。
 
-## Tip11-with语句来简化代码
+## Tip11- with语句来简化代码
 Kotlin中可以用with语句来省略同一个变量的多次声明，例如下面的函数
 详见案例代码[KotlinTip11](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip11/KotlinTip11.kt)
 ```kotlin
@@ -896,7 +896,7 @@ fun alphabet4(): String {
 ```
 像上面这样的，我们把同一个变量的声明从5次变为了0次，发现Kotlin的魅力了吧。
 
-## Tip12-apply语句来简化代码
+## Tip12- apply语句来简化代码
 除了用上面的with可以简化同一个变量的多次声明，还可以用apply关键字，我们来改造一下tip11中的函数：
 详见案例代码[KotlinTip12](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip12/KotlinTip12.kt)
 ```kotlin
@@ -937,6 +937,66 @@ fun testApply(context: Context) {
 }
 ```
 在类实例化的时候，就可以通过apply把需要初始化的步骤全部实现，非常的简洁
+
+## Tip13- 在编译阶段避免掉NullPointerException
+
+NullPointerException是Java程序员非常头痛的一个问题，我们知道Java 中分受检异常和非受检异常，NullPointerException是非受检异常，也就是说NullPointerException不需要显示的去catch住，
+往往在运行期间，程序就可能报出一个NullPointerException然后crash掉，Kotlin作为一门新语言，尝试在编译阶段就把空指针问题显式的标示出来，把问题留在编译阶段，让程序更加健壮。
+- Kotlin中类型分为可空类型和不可空类型，通过？代表可空，不带？代表不可为空
+详见案例代码[KotlinTip13](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip13/KotlinTip13.kt)
+```kotlin
+fun testNullType() {
+    val a: String = "aa"
+    /*
+    * a是非空类型，下面的给a赋值为null将会编译不通过
+    * */
+    //a = null
+    a.length
+
+    /*
+   * ？声明是可空类型，可以赋值为null
+   * */
+    var b: String? = "bb"
+    b = null
+    
+    /*
+   * b是可空类型，直接访问可空类型将编译不通过，需要通过?.或者!!.来访问
+   * */
+    //b.length
+    b?.length
+    b!!.length
+}
+```
+- 对于一个不可为空类型：如果直接给不可为空类型赋值一个可能为空的对象就在编译阶段就不能通过
+- 对于一个可空类型：通过？声明，在访问该类型的时候直接访问不能编译通过，需要通过?.或者!!.
+    - ?.  代表着如果该类型为空的话就返回null不做后续的操作，如果不为空的话才会去访问对应的方法或者属性
+    - !!. 代表着如果该类型为空的话就抛出NullPointerException，如果不为空就去访问对应的方法或者属性，
+    所以只有在很少的特定场景才用这种符号，代表着程序不处理这种异常的case了，会像java代码一样抛出NullPointerException。
+    而且代码中一定不用出现下面这种代码，会让代码可读性很差而且如果有空指针异常，我们也不能马上发现是哪空了：
+```kotlin
+    /*
+    * 不用链式的连续用!!.
+    * */
+    val user = User()
+    user!!.name!!.subSequence(0,5)!!.length
+```
+
+
+```kotlin
+
+```
+
+
+## Tip14-
+
+
+## Tip15-
+
+
+## Tip16-
+
+
+
 
 ### 参考文档
 * 《Kotlin in Action》
