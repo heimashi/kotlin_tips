@@ -827,6 +827,14 @@ class View {
 在函数参数中需要声明lambda的类型后，再调用该函数的时候就可以传人一个lambda表达式了。
 
 ## Tip11- with语句来简化代码
+
+- with 函数原型：
+```kotlin
+inline fun <T, R> with(receiver: T, f: T.() -> R): R = receiver.f()
+```
+- with函数并不是扩展函数，返回值是最后一行，可以直接调用对象的方法
+
+
 Kotlin中可以用with语句来省略同一个变量的多次声明，例如下面的函数
 详见案例代码[KotlinTip11](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip11/KotlinTip11.kt)
 ```kotlin
@@ -897,6 +905,14 @@ fun alphabet4(): String {
 像上面这样的，我们把同一个变量的声明从5次变为了0次，发现Kotlin的魅力了吧。
 
 ## Tip12- apply语句来简化代码
+
+- apply 函数原型：
+```kotlin
+inline fun <T> T.apply(block: T.() -> Unit): T { block(); return this }
+```
+- apply函数，在函数范围内，可以任意调用该对象的任意方法，并返回该对象
+
+
 除了用上面的with可以简化同一个变量的多次声明，还可以用apply关键字，我们来改造一下tip11中的函数：
 详见案例代码[KotlinTip12](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip12/KotlinTip12.kt)
 ```kotlin
@@ -1004,6 +1020,13 @@ val user: User? = User()
 ```
 通过if提前判断类型是否为空，如果不为空在这个分支里会**自动转化为非空类型**就可以直接访问了。
 #### let语句简化对可空对象对访问
+- let 函数原型：
+```kotlin
+inline fun <T, R> T.let(block: (T) -> R): R = block(this)
+```
+- let函数默认当前这个对象作为闭包的it参数，返回值是函数里面最后一行，或者指定return。
+
+
 上面的代码还可以用?.let语句进行，如下所示：
 ```kotlin
     /*
