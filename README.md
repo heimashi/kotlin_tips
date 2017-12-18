@@ -1117,6 +1117,7 @@ fun testOperator() {
 #### 函数作为参数
 
 函数作为参数，即高阶函数中，函数的参数可以是一个函数类型，例如要定义一个函数，该函数根据传人的操作函数来对2和3做相应的处理。
+详见案例代码[KotlinTip15](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip15/KotlinTip15.kt)
 
 ```kotlin
 /*
