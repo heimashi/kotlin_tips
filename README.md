@@ -724,10 +724,102 @@ class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutab
     }
 }
 ```
-通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了，通过类委托将10行代码就可以实现上面接近100行的功能，简洁明了，去掉类模版代码。
+通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了，通过类委托将10行代码就可以实现上面接近100行的功能，简洁明了，去掉了模版代码。
 
-## Tip10-
+## Tip10-Lambda表达式
+lambda表达式可以简化我们的代码。以Android中常见的OnClickListener来说明，在Java中我们一遍这么去设置：
+```java
+        TextView textView = new TextView(context);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //handle click
+            }
+        });
+```
+Java中需要声明一个匿名内部类去处理，这种情况可以用lambda表达式来简化。
+- lambda表达式一般长这样
+    - { x:Int, y:Int -> x+y }
+    - 参数 -> 表达式 并且始终在大括号中
+    - it作为默认参数名
+    - lambda捕捉，当捕捉final变量时，它的值和lambda代码一起存储
+    - 而非final变量，它的值被封装在一个特殊的包装器中，而这个包装器的引用会和lambda代码一起存储
+    
+我们来看看Kotlin中的例子：
+```kotlin
+    val textView = TextView(context)
 
+    /*
+    * 传统形势
+    * */
+    textView.setOnClickListener(object : android.view.View.OnClickListener {
+        override fun onClick(v: android.view.View?) {
+            //handle click
+        }
+    })
+
+    /*
+    * lambda的形势
+    * */
+    textView.setOnClickListener({ v ->
+        {
+            //handle click
+        }
+    })
+```
+当lambda的参数没有使用时可以省略，省略的时候用it来替代
+```kotlin
+    /*
+    * lambda的参数如果没有使用可以省略，省略的时候用it来替代
+    * */
+    textView.setOnClickListener({
+        //handle click
+    })
+```
+lambda在参数的最后一个的情况可以将之提出去
+```kotlin
+    /*
+    * lambda在参数的最后一个的情况可以将之提出去
+    * */
+    textView.setOnClickListener() {
+        //handle click
+    }
+```
+lambda提出去之后，函数如果没有其他参数括号可以省略
+```kotlin
+    /*
+    * lambda提出去之后，函数如果没有其他参数括号可以省略
+    * */
+    textView.setOnClickListener {
+        //handle click
+    }
+```
+我们再看看如果自己去实现一个带lambda参数的函数应该怎么去定义：
+```kotlin
+class View {
+    var listener: OnClickListener? = null;
+
+    /*
+    * 传统方式的
+    * */
+    fun setOnClickListener(listener: OnClickListener) {
+        this.listener = listener
+    }
+
+    fun doSth() {
+        //some case:
+        listener?.onClick()
+    }
+
+    /*
+    * 声明lambda形势，listener: () -> Unit
+    * */
+    fun setOnClickListener(listener: () -> Unit) {
+
+    }
+}
+```
+在函数参数中需要声明lambda的类型后，再调用该函数的时候就可以传人一个lambda表达式了。
 
 ## Tip11-
 
