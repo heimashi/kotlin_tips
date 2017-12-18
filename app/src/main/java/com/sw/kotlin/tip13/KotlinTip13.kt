@@ -55,8 +55,8 @@ fun testNullType2() {
     * 还可以通过let语句，在?.let之后，如果为空不会有任何操作，只有在非空的时候才会执行let之后的操作
     * */
     user?.let {
-        user.name
-        user.age
-        user.toString()
+        it.name
+        it.age
+        it.toString()
     }
 }

@@ -830,7 +830,7 @@ class View {
 
 - with 函数原型：
 ```kotlin
-inline fun <T, R> with(receiver: T, f: T.() -> R): R = receiver.f()
+inline fun <T, R> with(receiver: T, block: T.() -> R): R = receiver.block()
 ```
 - with函数并不是扩展函数，返回值是最后一行，可以直接调用对象的方法
 
@@ -1033,9 +1033,9 @@ inline fun <T, R> T.let(block: (T) -> R): R = block(this)
     * 通过let语句，在?.let之后，如果为空不会有任何操作，只有在非空的时候才会执行let之后的操作
     * */
     user?.let {
-        user.name
-        user.age
-        user.toString()
+        it.name
+        it.age
+        it.toString()
     }
 ```
 通过let语句，在?.let之后，如果为空不会有任何操作，只有在非空的时候才会执行let之后的操作

@@ -36,4 +36,12 @@ class ExampleUnitTest {
         println(alphabet())
     }
 
+    @Test
+    fun test04(){
+        "testRun".run {
+            println("this = " + this)
+            "ss"
+        }.let { println(it) }
+    }
+
 }
