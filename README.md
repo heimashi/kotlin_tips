@@ -728,7 +728,7 @@ class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutab
 
 ## Tip10- Lambda表达式简化代码
 详见案例代码[KotlinTip10](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip10/KotlinTip10.kt)
-lambda表达式可以简化我们的代码。以Android中常见的OnClickListener来说明，在Java中我们一遍这么去设置：
+lambda表达式可以简化我们的代码。以Android中常见的OnClickListener来说明，在Java中我们一般这样设置：
 ```java
         TextView textView = new TextView(context);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -744,14 +744,14 @@ Java中需要声明一个匿名内部类去处理，这种情况可以用lambda�
     - 参数 -> 表达式 并且始终在大括号中
     - it作为默认参数名
     - lambda捕捉，当捕捉final变量时，它的值和lambda代码一起存储
-    - 而非final变量，它的值被封装在一个特殊的包装器中，而这个包装器的引用会和lambda代码一起存储
+    - 非final变量，它的值被封装在一个特殊的包装器中，这个包装器的引用会和lambda代码一起存储
     
 我们来看看Kotlin中的例子：
 ```kotlin
     val textView = TextView(context)
 
     /*
-    * 传统形势
+    * 传统方式
     * */
     textView.setOnClickListener(object : android.view.View.OnClickListener {
         override fun onClick(v: android.view.View?) {
@@ -760,7 +760,7 @@ Java中需要声明一个匿名内部类去处理，这种情况可以用lambda�
     })
 
     /*
-    * lambda的形势
+    * lambda的方式
     * */
     textView.setOnClickListener({ v ->
         {
@@ -805,7 +805,7 @@ class View {
     var listener: OnClickListener? = null;
 
     /*
-    * 传统方式的
+    * 传统方式
     * */
     fun setOnClickListener(listener: OnClickListener) {
         this.listener = listener
@@ -817,7 +817,7 @@ class View {
     }
 
     /*
-    * 声明lambda形势，listener: () -> Unit
+    * 声明lambda方式，listener: () -> Unit
     * */
     fun setOnClickListener(listener: () -> Unit) {
 
@@ -902,7 +902,7 @@ fun alphabet4(): String {
     }
 }
 ```
-像上面这样的，我们把同一个变量的声明从5次变为了0次，发现Kotlin的魅力了吧。
+像上面这样，我们可以把同一个变量的显式调用从5次变为0次，发现Kotlin的魅力了吧。
 
 ## Tip12- apply语句来简化代码
 
