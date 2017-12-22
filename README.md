@@ -1219,6 +1219,7 @@ fun test05(){
 
 ## Tip16- 用Lambda来简化策略模式
 策略模式是常见的模式之一，java的例子如下
+详见案例代码[Tip16](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip16)
 ```java
 /**
      * 定义策略接口
