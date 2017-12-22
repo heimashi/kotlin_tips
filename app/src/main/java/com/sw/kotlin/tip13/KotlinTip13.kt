@@ -59,4 +59,36 @@ fun testNullType2() {
         it.age
         it.toString()
     }
+
+}
+
+/*
+* 对空值的处理
+* */
+fun testElvis(input: String?, user: User?) {
+    val a: Int?
+    if (input == null) {
+        a = input?.length
+    } else {
+        a = -1;
+    }
+
+    if (user == null) {
+        var newOne = User()
+        newOne.save()
+    } else {
+        user.save()
+    }
+}
+
+fun User.save() {
+    //save user
+}
+
+/**
+ * Elvis操作符 ?: 简化对空值的处理
+ */
+fun testElvis2(input: String?, user: User?) {
+    val b = input?.length ?: -1;
+    user?.save() ?: User().save()
 }

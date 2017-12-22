@@ -622,7 +622,7 @@ fun saveUser3(user: User) {
         }
     }
 ```
-这段代码Java需要70行左右，而如果用kotlin，只需要一行代码将可以做到。
+这段代码Java需要70行左右，而如果用kotlin，只需要一行代码就可以做到。
 ```kotlin
 /*
 * Kotlin会为类的参数自动实现get set方法
@@ -1019,6 +1019,7 @@ val user: User? = User()
     }
 ```
 通过if提前判断类型是否为空，如果不为空在这个分支里会**自动转化为非空类型**就可以直接访问了。
+
 #### let语句简化对可空对象对访问
 - let 函数原型：
 ```kotlin
@@ -1039,6 +1040,40 @@ inline fun <T, R> T.let(block: (T) -> R): R = block(this)
     }
 ```
 通过let语句，在?.let之后，如果为空不会有任何操作，只有在非空的时候才会执行let之后的操作
+
+#### Elvis操作符 ?: 简化对空值的处理
+如果值可能为空，对空值的处理可能会比较麻烦，像下面这样：
+```kotlin
+/*
+* 对空值的处理
+* */
+fun testElvis(input: String?, user: User?) {
+    val a: Int?
+    if (input == null) {
+        a = input?.length
+    } else {
+        a = -1;
+    }
+
+    if (user == null) {
+        var newOne = User()
+        newOne.save()
+    } else {
+        user.save()
+    }
+}
+```
+Elvis操作符?:能够简化上面的操作，?:符号会在对于空的情况才会进行下面的处理，**跟?.let正好相反**，例如我们可以用两行代码来简化上面从操作：
+```kotlin
+/**
+ * Elvis操作符 ?: 简化对空值的处理
+ */
+fun testElvis2(input: String?, user: User?) {
+    val b = input?.length ?: -1;
+    user?.save() ?: User().save()
+}
+```
+
 
 ## Tip14- 运算符重载
 
