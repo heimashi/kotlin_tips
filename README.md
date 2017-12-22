@@ -1217,11 +1217,95 @@ fun test05(){
 ```
 如果是普通快递，采用6 + 2.1 * it的规则计算价格，如果是高级快递按照6 + 2.1 * it计算价格，根据不同的类型返回不同的计价函数。
 
-## Tip16-
+## Tip16- 用Lambda来简化策略模式
+策略模式是常见的模式之一，java的例子如下
+```java
+/**
+     * 定义策略接口
+     */
+    public interface Strategy {
+        void doSth();
+    }
 
-```kotlin
+    /**
+     * A策略
+     */
+    public static class AStrategy implements Strategy {
+        @Override
+        public void doSth() {
+            System.out.println("Do A Strategy");
+        }
+    }
 
+    /**
+     * B策略
+     */
+    public static class BStrategy implements Strategy {
+        @Override
+        public void doSth() {
+            System.out.println("Do B Strategy");
+        }
+    }
+
+    /**
+     * 策略实施者
+     */
+    public static class Worker {
+
+        private Strategy strategy;
+
+        public Worker(Strategy strategy) {
+            this.strategy = strategy;
+        }
+
+        public void work() {
+            System.out.println("START");
+            if (strategy != null) {
+                strategy.doSth();
+            }
+            System.out.println("END");
+        }
+    }
 ```
+如上面的例子所示，有A、B两种策略，Worker根据不同的策略做不同的工作，使用策略时：
+```java
+    Worker worker1 = new Worker(new AStrategy());
+    Worker worker2 = new Worker(new BStrategy());
+    worker1.work();
+    worker2.work();
+```
+在java中实现这种策略模式难免需要先定义好策略的接口，然后根据接口实现不同的策略，
+在Kotlin中完全可以用用Lambda来简化策略模式，上面的例子用Kotlin实现：
+```kotlin
+/**
+ * 策略实施者
+ * @param strategy lambda类型的策略
+ */
+class Worker(private val strategy: () -> Unit) {
+    fun work() {
+        println("START")
+        strategy.invoke()
+        println("END")
+    }
+
+}
+
+/*
+* 测试
+* */
+fun testStrategy() {
+    val worker1 = Worker({
+        println("Do A Strategy")
+    })
+    val bStrategy = {
+        println("Do B Strategy")
+    }
+    val worker2 = Worker(bStrategy)
+    worker1.work()
+    worker2.work()
+}
+```
+不需要先定义策略的接口，直接把策略以lambda表达式的形式传进来就行了。
 
 ## Tip17-
 

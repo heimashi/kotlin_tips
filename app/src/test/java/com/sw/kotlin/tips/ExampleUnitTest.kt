@@ -4,6 +4,7 @@ import com.sw.kotlin.tip1.JavaExample1
 import com.sw.kotlin.tip1.testString
 import com.sw.kotlin.tip11.alphabet
 import com.sw.kotlin.tip14.testOperator
+import com.sw.kotlin.tip16.testStrategy
 import com.sw.kotlin.tip3.printList
 import org.junit.Test
 
@@ -21,24 +22,24 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun test01(){
+    fun test01() {
         testString()
         val j = JavaExample1()
         j.testString1()
     }
 
     @Test
-    fun test02(){
+    fun test02() {
         printList()
     }
 
     @Test
-    fun test03(){
+    fun test03() {
         println(alphabet())
     }
 
     @Test
-    fun test04(){
+    fun test04() {
         "testRun".run {
             println("this = " + this)
             "ss"
@@ -46,8 +47,13 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun test05(){
+    fun test05() {
         testOperator()
+    }
+
+    @Test
+    fun test06() {
+        testStrategy()
     }
 
 }
