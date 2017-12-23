@@ -31,3 +31,11 @@ fun testString2() {
     println("First content is ${if (strings.size > 0) strings[0] else "null"}")
 }
 
+/*
+*Kotlin中，美元符号$是特殊字符，在字符串中不能直接显示，必须经过转义，方法1是用反斜杠，方法二是${'$'}
+* */
+fun testString3() {
+    println("First content is \$strings")
+    println("First content is ${'$'}strings")
+}
+

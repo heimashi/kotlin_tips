@@ -58,6 +58,16 @@ fun testString2() {
     println("First content is ${if (strings.size > 0) strings[0] else "null"}")
 }
 ```
+值得注意的是，在Kotlin中，美元符号$是特殊字符，在字符串中不能直接显示，必须经过转义，方法1是用反斜杠，方法二是${'$'}
+```kotlin
+/*
+*Kotlin中，美元符号$是特殊字符，在字符串中不能直接显示，必须经过转义，方法1是用反斜杠，方法二是${'$'}
+* */
+fun testString3() {
+    println("First content is \$strings")
+    println("First content is ${'$'}strings")
+}
+```
 
 ## Tip2- Kotlin中大多数控制结构都是表达式
 
@@ -1218,7 +1228,7 @@ fun test05(){
 如果是普通快递，采用6 + 2.1 * it的规则计算价格，如果是高级快递按照6 + 2.1 * it计算价格，根据不同的类型返回不同的计价函数。
 
 ## Tip16- 用Lambda来简化策略模式
-策略模式是常见的模式之一，java的例子如下
+策略模式是常见的模式之一，java的例子如下。
 详见案例代码[Tip16](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip16)
 ```java
 /**

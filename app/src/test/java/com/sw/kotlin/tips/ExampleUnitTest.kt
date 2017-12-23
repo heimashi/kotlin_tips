@@ -2,6 +2,7 @@ package com.sw.kotlin.tips
 
 import com.sw.kotlin.tip1.JavaExample1
 import com.sw.kotlin.tip1.testString
+import com.sw.kotlin.tip1.testString3
 import com.sw.kotlin.tip11.alphabet
 import com.sw.kotlin.tip14.testOperator
 import com.sw.kotlin.tip16.testStrategy
@@ -17,8 +18,8 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun test00() {
+        testString3()
     }
 
     @Test
