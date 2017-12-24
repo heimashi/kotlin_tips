@@ -2,6 +2,8 @@
 
 汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个小点tip都有详细的说明和案例代码，争取把每个tip分析得清楚易懂，会不断的更新维护tips，欢迎fork进来加入我们一起来维护，有问题的话欢迎提Issues。
 
+- 推荐一个Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin),用kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、文字log
+
 
 ## Tip1- 更简洁的字符串
 
