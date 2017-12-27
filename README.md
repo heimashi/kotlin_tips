@@ -443,7 +443,7 @@ fun testLateInit() {
 - lateinit 修饰var的变量，且变量是非空的类型
 
 ## Tip6- 不用再手写findViewById
-在Android的View中，会有很多代码是在声明一个View，然后通过findViewById后从xml中实例化赋值给对应的View。在kotlin中可以完全解放出来了，不用再手写findViewById。步骤如下：
+在Android的View中，会有很多代码是在声明一个View，然后通过findViewById后从xml中实例化赋值给对应的View。在kotlin中可以完全解放出来了，利用kotlin-android-extensions插件，不用再手写findViewById。步骤如下：
 详见案例代码[KotlinTip6](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip6/KotlinTip6.kt)
 - 步骤1，在项目的gradle中 apply plugin: 'kotlin-android-extensions'
 - 步骤2，按照原来的习惯书写布局xml文件
@@ -455,29 +455,30 @@ fun testLateInit() {
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tip6_tv"
+        android:id="@+id/tip6Tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <ImageView
-        android:id="@+id/tip6_img"
+        android:id="@+id/tip6Img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/tip6_btn"
+        android:id="@+id/tip6Btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
 ```
-- 步骤3，在java代码中import对应的布局就可以开始使用了，View不用提前声明，插件会自动根据布局的id生成对应的View
+- 步骤3，在java代码中import对应的布局就可以开始使用了，View不用提前声明，插件会自动根据布局的id生成对应的View成员（其实没有生成属性，原理见下面）
 ```kotlin
 import com.sw.kotlin.tips.R
 /*
 * 导入插件生成的View
 * */
 import kotlinx.android.synthetic.main.activity_tip6.*
+
 
 class KotlinTip6 : Activity(){
 
@@ -487,16 +488,77 @@ class KotlinTip6 : Activity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tip6)
-        tip6_tv.setText("Auto find view for TextView")
-        tip6_img.setImageBitmap(null)
-        tip6_btn.setOnClickListener{
-            //todo sth
+        tip6Tv.text = "Auto find view for TextView"
+        tip6Img.setImageBitmap(null)
+        tip6Btn.setOnClickListener{
+            test()
         }
+    }
+
+    private fun test(){
+        tip6Tv.text = "update"
     }
 
 }
 ```
 像上面代码这样，Activity里的三个View自动生成了，不用再去声明，然后findViewById，然后转型赋值，是不是减少了很多没必要的代码，让代码非常的干净。
+#### Why？原理是什么？插件帮我们做了什么？
+要看原理还是将上面的代码转为java语言来理解，参照tips4提供的方式转换为如下的java代码：
+```java
+public final class KotlinTip6 extends Activity {
+   private HashMap _$_findViewCache;
+
+   protected void onCreate(@Nullable Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      this.setContentView(2131296284);
+      TextView var10000 = (TextView)this._$_findCachedViewById(id.tip6Tv);
+      Intrinsics.checkExpressionValueIsNotNull(var10000, "tip6Tv");
+      var10000.setText((CharSequence)"Auto find view for TextView");
+      ((ImageView)this._$_findCachedViewById(id.tip6Img)).setImageBitmap((Bitmap)null);
+      ((Button)this._$_findCachedViewById(id.tip6Btn)).setOnClickListener((OnClickListener)(new OnClickListener() {
+         public final void onClick(View it) {
+            KotlinTip6.this.test();
+         }
+      }));
+   }
+
+   private final void test() {
+      TextView var10000 = (TextView)this._$_findCachedViewById(id.tip6Tv);
+      Intrinsics.checkExpressionValueIsNotNull(var10000, "tip6Tv");
+      var10000.setText((CharSequence)"update");
+   }
+
+   public View _$_findCachedViewById(int var1) {
+      if(this._$_findViewCache == null) {
+         this._$_findViewCache = new HashMap();
+      }
+
+      View var2 = (View)this._$_findViewCache.get(Integer.valueOf(var1));
+      if(var2 == null) {
+         var2 = this.findViewById(var1);
+         this._$_findViewCache.put(Integer.valueOf(var1), var2);
+      }
+
+      return var2;
+   }
+
+   public void _$_clearFindViewByIdCache() {
+      if(this._$_findViewCache != null) {
+         this._$_findViewCache.clear();
+      }
+
+   }
+}
+```
+如上面的代码所示，在编译阶段，插件会帮我们生成视图缓存，视图由一个Hashmap结构的_$_findViewCache变量缓存，
+会根据对应的id先从缓存里查找，缓存没命中再去真正调用findViewById查找出来，再存在HashMap中。
+
+#### 在fragment中findViewByID
+在fragment中也类似，有一点区别，例子如下：
+```kotlin
+
+```
+
 
 ## Tip7- 利用局部函数抽取重复代码
 Kotlin中提供了函数的嵌套，在函数内部还可以定义新的函数。这样我们可以在函数中嵌套这些提前的函数，来抽取重复代码。如下面的案例所示:
