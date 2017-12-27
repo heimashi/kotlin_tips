@@ -556,9 +556,80 @@ public final class KotlinTip6 extends Activity {
 #### 在fragment中findViewByID
 在fragment中也类似，有一点区别，例子如下：
 ```kotlin
+class Tip6Fragment : Fragment() {
 
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater?.inflate(R.layout.fragment_tip6, container, false)
+        /*
+        * 这时候不能在onCreateView方法里用view，需要在onViewCreate里，原理是插件用了getView来findViewById
+        * */
+        //tip6Tv.text = "test2"
+        return view
+    }
+
+    /*
+    * 需要在onViewCreate里，原理是插件用了getView来findViewById
+    * */
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        tip6Tv.text = "test"
+    }
+}
 ```
+如上所示，Fragment需要注意，不能在onCreateView方法里用view，不然会出现空指针异常，需要在onViewCreate里，原理是插件用了getView来findViewById，
+我们看看将上面的代码转成java后的代码：
+```java
+public final class Tip6Fragment extends Fragment {
+   private HashMap _$_findViewCache;
 
+   @Nullable
+   public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+      View view = inflater != null?inflater.inflate(2131296286, container, false):null;
+      return view;
+   }
+
+   public void onViewCreated(@Nullable View view, @Nullable Bundle savedInstanceState) {
+      super.onViewCreated(view, savedInstanceState);
+      TextView var10000 = (TextView)this._$_findCachedViewById(id.tip6Tv);
+      Intrinsics.checkExpressionValueIsNotNull(var10000, "tip6Tv");
+      var10000.setText((CharSequence)"test");
+   }
+
+   public View _$_findCachedViewById(int var1) {
+      if(this._$_findViewCache == null) {
+         this._$_findViewCache = new HashMap();
+      }
+
+      View var2 = (View)this._$_findViewCache.get(Integer.valueOf(var1));
+      if(var2 == null) {
+         View var10000 = this.getView();
+         if(var10000 == null) {
+            return null;
+         }
+
+         var2 = var10000.findViewById(var1);
+         this._$_findViewCache.put(Integer.valueOf(var1), var2);
+      }
+
+      return var2;
+   }
+
+   public void _$_clearFindViewByIdCache() {
+      if(this._$_findViewCache != null) {
+         this._$_findViewCache.clear();
+      }
+
+   }
+
+   // $FF: synthetic method
+   public void onDestroyView() {
+      super.onDestroyView();
+      this._$_clearFindViewByIdCache();
+   }
+}
+```
+跟Activity中类似，会有一个View的HashMap，关键不同的地方在_$_findCachedViewById里面，需要getView或者当前Fragment的View，
+故在onViewCreated中getView还是空的，原理就好理解了。另外在onDestroyView会调用_$_clearFindViewByIdCache方法清掉缓存。
 
 ## Tip7- 利用局部函数抽取重复代码
 Kotlin中提供了函数的嵌套，在函数内部还可以定义新的函数。这样我们可以在函数中嵌套这些提前的函数，来抽取重复代码。如下面的案例所示:
