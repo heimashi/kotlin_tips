@@ -173,7 +173,7 @@ fun getPoint(grade: Char) = when (grade) {
         } else if (point.hashCode() == 0x100) {
             //...
             return "STH";
-        } else {a
+        } else {
             return "UN_KNOW";
         }
     }
@@ -1453,11 +1453,7 @@ fun testStrategy() {
 ```
 不需要先定义策略的接口，直接把策略以lambda表达式的形式传进来就行了。
 
-## Tip17-
 
-```kotlin
-
-```
 
 
 
