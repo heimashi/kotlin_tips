@@ -871,7 +871,7 @@ class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutab
 ```
 通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了，通过类委托将10行代码就可以实现上面接近100行的功能，简洁明了，去掉了模版代码。
 
-## Tip10- Lambda表达式简化代码
+## Tip10- Lambda表达式简化OnClickListener
 详见案例代码[KotlinTip10](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip10/KotlinTip10.kt)
 lambda表达式可以简化我们的代码。以Android中常见的OnClickListener来说明，在Java中我们一般这样设置：
 ```java
