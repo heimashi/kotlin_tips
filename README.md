@@ -84,7 +84,7 @@ fun testString3() {
 
 详见案例代码[tip2](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip2)
 #### Example1：if语句
-java中，if 是语句，没有值，必须显示的return
+java中，if 是语句，没有值，必须显式的return
 ```java
 /*
 * java中的if语句
@@ -100,7 +100,7 @@ public int max(int a, int b) {
 kotlin中，if 是表达式，不是语句，因为表达式有值，可以作为值return出去
 ```kotlin
 /*
-* kotlin中，if 是表达式，不是语句，类似于java中的三木运算符a > b ? a : b
+* kotlin中，if 是表达式，不是语句，类似于java中的三目运算符a > b ? a : b
 * */
 fun max(a: Int, b: Int): Int {
     return if (a > b) a else b
@@ -191,9 +191,9 @@ fun getPoint2(grade: Int) = when {
 }
 ```
 
-## Tip3- 更好调用的函数：显示参数名/默认参数值
+## Tip3- 更好调用的函数：显式参数名/默认参数值
 
-Kotlin的函数更加好调用，主要是表现在两个方面：1，显示的**标示参数名**，可以方便代码阅读；2，函数可以有**默认参数值**，可以大大**减少Java中的函数重载**。
+Kotlin的函数更加好调用，主要是表现在两个方面：1，显式的**标示参数名**，可以方便代码阅读；2，函数可以有**默认参数值**，可以大大**减少Java中的函数重载**。
 例如现在需要实现一个工具函数，打印列表的内容：
 详见案例代码[KotlinTip3](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip3/KotlinTip3.kt)
 ```kotlin
@@ -219,12 +219,12 @@ fun printList() {
     val list = listOf(2, 4, 0)
     /*不标明参数名*/
     println(joinToString(list, " - ", "[", "]"))
-    /*显示的标明参数名称*/
+    /*显式的标明参数名称*/
     println(joinToString(list, separator = " - ", prefix = "[", postfix = "]"))
 }
 ```
-如上面的代码所示，函数joinToString想要打印列表的内容，需要传人四个参数：列表、分隔符、前缀和后缀。
-由于参数很多，在后续使用该函数的时候不是很直观的知道每个参数是干什么用的，这时候可以显示的标明参数名称，增加代码可读性。
+如上面的代码所示，函数joinToString想要打印列表的内容，需要传入四个参数：列表、分隔符、前缀和后缀。
+由于参数很多，在后续使用该函数的时候不是很直观的知道每个参数是干什么用的，这时候可以显式的标明参数名称，增加代码可读性。
 同时，定义函数的时候还可以给函数默认的参数，如下所示：
 ```kotlin
 /*
@@ -353,7 +353,7 @@ public static final void setLastChar(@NotNull StringBuilder $receiver, char valu
     $receiver.setCharAt($receiver.length() - 1, value);
 }
 ```
-查看上面的代码可知：对于扩展函数，转化为Java的时候其实就是一个静态的函数，同时这个静态函数的第一个参数就是该类的实例对象，这样把类的实例传人函数以后，函数内部就可以访问到类的公有方法。
+查看上面的代码可知：对于扩展函数，转化为Java的时候其实就是一个静态的函数，同时这个静态函数的第一个参数就是该类的实例对象，这样把类的实例传入函数以后，函数内部就可以访问到类的公有方法。
 对于扩展属性也类似，获取的扩展属性会转化为一个静态的get函数，同时这个静态函数的第一个参数就是该类的实例对象，设置的扩展属性会转化为一个静态的set函数，同时这个静态函数的第一个参数就是该类的实例对象。
 函数内部可以访问公有的方法和属性。
 - 从上面转换的源码其实可以看到**扩展函数和扩展属性适用的地方和缺陷**，有两点：
@@ -890,7 +890,7 @@ Java中需要声明一个匿名内部类去处理，这种情况可以用lambda�
     - it作为默认参数名
     - lambda捕捉，当捕捉final变量时，它的值和lambda代码一起存储
     - 非final变量，它的值被封装在一个特殊的包装器中，这个包装器的引用会和lambda代码一起存储
-    
+
 我们来看看Kotlin中的例子：
 ```kotlin
     val textView = TextView(context)
@@ -969,7 +969,7 @@ class View {
     }
 }
 ```
-在函数参数中需要声明lambda的类型后，再调用该函数的时候就可以传人一个lambda表达式了。
+在函数参数中需要声明lambda的类型后，再调用该函数的时候就可以传入一个lambda表达式了。
 
 ## Tip11- with语句来简化代码
 
@@ -999,7 +999,7 @@ fun alphabet(): String {
 在上面的函数中，result变量出现了5次，如果用with语句，可以将这5次都不用再出现了，我们来一步一步地看是怎么实现的：
 ```kotlin
 /*
-* 通过with语句，将result作为参数传人，在内部就可以通过this来表示result变量了
+* 通过with语句，将result作为参数传入，在内部就可以通过this来表示result变量了
 * */
 fun alphabet2(): String {
     val result = StringBuilder()
@@ -1013,7 +1013,7 @@ fun alphabet2(): String {
     }
 }
 ```
-通过with语句，将result作为参数传人，在内部就可以通过this来表示result变量了，而且这个this是可以省略的
+通过with语句，将result作为参数传入，在内部就可以通过this来表示result变量了，而且这个this是可以省略的
 
 ```kotlin
 /*
@@ -1034,7 +1034,7 @@ fun alphabet3(): String {
 在内部this省略掉后，现在只有一个result了，这个其实也是没必要的，于是出现了下面的最终版本：
 ```kotlin
 /*
-* 通过with语句，可以直接将对象传人，省掉对象的声明
+* 通过with语句，可以直接将对象传入，省掉对象的声明
 * */
 fun alphabet4(): String {
     return with(StringBuilder()) {
@@ -1132,8 +1132,8 @@ fun testNullType() {
 - 对于一个可空类型：通过？声明，在访问该类型的时候直接访问不能编译通过，需要通过?.或者!!.
     - ?.  代表着如果该类型为空的话就返回null不做后续的操作，如果不为空的话才会去访问对应的方法或者属性
     - !!. 代表着如果该类型为空的话就抛出NullPointerException，如果不为空就去访问对应的方法或者属性，
-    所以只有在很少的特定场景才用这种符号，代表着程序不处理这种异常的case了，会像java代码一样抛出NullPointerException。
-    而且代码中一定不用出现下面这种代码，会让代码可读性很差而且如果有空指针异常，我们也不能马上发现是哪空了：
+      所以只有在很少的特定场景才用这种符号，代表着程序不处理这种异常的case了，会像java代码一样抛出NullPointerException。
+      而且代码中一定不用出现下面这种代码，会让代码可读性很差而且如果有空指针异常，我们也不能马上发现是哪空了：
 ```kotlin
     /*
     * 不用链式的连续用!!.
@@ -1276,11 +1276,11 @@ fun testOperator() {
 - 函数类型   
     - (Int, String) -> Unit
     - 参数类型->返回类型 Unit不能省略
-  
+
 ```kotlin
     val list = listOf(2, 5, 10)
     /*
-    * 传人函数来过滤
+    * 传入函数来过滤
     * */
     println(list.filter { it > 4 })
       
@@ -1296,7 +1296,7 @@ fun testOperator() {
 
 #### 函数作为参数
 
-函数作为参数，即高阶函数中，函数的参数可以是一个函数类型，例如要定义一个函数，该函数根据传人的操作函数来对2和3做相应的处理。
+函数作为参数，即高阶函数中，函数的参数可以是一个函数类型，例如要定义一个函数，该函数根据传入的操作函数来对2和3做相应的处理。
 详见案例代码[KotlinTip15](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip15/KotlinTip15.kt)
 
 ```kotlin
@@ -1332,7 +1332,7 @@ fun test04() {
     println("12eafsfsfdbzzsa".filter { it in 'a'..'f' })
 }
 ```
-像上面这样predicate是函数类型，它会根据传人的char来判断得到一个Boolean值。
+像上面这样predicate是函数类型，它会根据传入的char来判断得到一个Boolean值。
 
 #### 函数作为返回值
 
