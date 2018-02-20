@@ -63,7 +63,7 @@ fun testString2() {
 值得注意的是，在Kotlin中，美元符号$是特殊字符，在字符串中不能直接显示，必须经过转义，方法1是用反斜杠，方法二是${'$'}
 ```kotlin
 /*
-*Kotlin中，美元符号$是特殊字符，在字符串中不能直接显示，必须经过转义，方法1是用反斜杠，方法二是${'$'}
+* Kotlin中，美元符号$是特殊字符，在字符串中不能直接显示，必须经过转义，方法1是用反斜杠，方法二是${'$'}
 * */
 fun testString3() {
     println("First content is \$strings")
@@ -217,9 +217,9 @@ fun <T> joinToString(collection: Collection<T>,
 * */
 fun printList() {
     val list = listOf(2, 4, 0)
-    /*不标明参数名*/
+    // 不标明参数名
     println(joinToString(list, " - ", "[", "]"))
-    /*显式的标明参数名称*/
+    // 显式的标明参数名称
     println(joinToString(list, separator = " - ", prefix = "[", postfix = "]"))
 }
 ```
@@ -263,7 +263,7 @@ fun printList3() {
 * */
 fun String.lastChar(): Char = this.get(this.length - 1)
 /*
-*测试
+* 测试
 * */
 fun testFunExtension() {
     val str = "test extension fun";
@@ -311,7 +311,7 @@ var StringBuilder.lastChar: Char
 /*
 * 测试
 * */
-fun testExtension(){
+fun testExtension() {
     val s = "abc"
     println(s.lastChar)
     val sb = StringBuilder("abc")
@@ -364,7 +364,7 @@ public static final void setLastChar(@NotNull StringBuilder $receiver, char valu
 /*
 * show toast in activity
 * */
-fun Activity.toast(msg: String){
+fun Activity.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
@@ -480,7 +480,7 @@ import com.sw.kotlin.tips.R
 import kotlinx.android.synthetic.main.activity_tip6.*
 
 
-class KotlinTip6 : Activity(){
+class KotlinTip6 : Activity() {
 
     /*
     * 自动根据layout的id生成对应的view
@@ -490,7 +490,7 @@ class KotlinTip6 : Activity(){
         setContentView(R.layout.activity_tip6)
         tip6Tv.text = "Auto find view for TextView"
         tip6Img.setImageBitmap(null)
-        tip6Btn.setOnClickListener{
+        tip6Btn.setOnClickListener {
             test()
         }
     }
@@ -525,16 +525,16 @@ public final class KotlinTip6 extends Activity {
    private final void test() {
       TextView var10000 = (TextView)this._$_findCachedViewById(id.tip6Tv);
       Intrinsics.checkExpressionValueIsNotNull(var10000, "tip6Tv");
-      var10000.setText((CharSequence)"update");
+      var10000.setText((CharSequence) "update");
    }
 
    public View _$_findCachedViewById(int var1) {
-      if(this._$_findViewCache == null) {
+      if (this._$_findViewCache == null) {
          this._$_findViewCache = new HashMap();
       }
 
       View var2 = (View)this._$_findViewCache.get(Integer.valueOf(var1));
-      if(var2 == null) {
+      if (var2 == null) {
          var2 = this.findViewById(var1);
          this._$_findViewCache.put(Integer.valueOf(var1), var2);
       }
@@ -543,10 +543,9 @@ public final class KotlinTip6 extends Activity {
    }
 
    public void _$_clearFindViewByIdCache() {
-      if(this._$_findViewCache != null) {
+      if (this._$_findViewCache != null) {
          this._$_findViewCache.clear();
       }
-
    }
 }
 ```
@@ -563,7 +562,7 @@ class Tip6Fragment : Fragment() {
         /*
         * 这时候不能在onCreateView方法里用view，需要在onViewCreate里，原理是插件用了getView来findViewById
         * */
-        //tip6Tv.text = "test2"
+        // tip6Tv.text = "test2"
         return view
     }
 
@@ -596,14 +595,14 @@ public final class Tip6Fragment extends Fragment {
    }
 
    public View _$_findCachedViewById(int var1) {
-      if(this._$_findViewCache == null) {
+      if (this._$_findViewCache == null) {
          this._$_findViewCache = new HashMap();
       }
 
       View var2 = (View)this._$_findViewCache.get(Integer.valueOf(var1));
-      if(var2 == null) {
+      if (var2 == null) {
          View var10000 = this.getView();
-         if(var10000 == null) {
+         if (var10000 == null) {
             return null;
          }
 
@@ -615,7 +614,7 @@ public final class Tip6Fragment extends Fragment {
    }
 
    public void _$_clearFindViewByIdCache() {
-      if(this._$_findViewCache != null) {
+      if (this._$_findViewCache != null) {
          this._$_findViewCache.clear();
       }
 
@@ -647,13 +646,13 @@ fun saveUser(user: User) {
     if (user.email.isEmpty()) {
         throw IllegalArgumentException("Can't save user ${user.id}: empty Email")
     }
-    //save to db ...
+    // save to db ...
 }
 ```
 上面的代码在判断name、address等是否为空的处理其实很类似。这时候，我们可以利用在函数内部嵌套的声明一个通用的判空函数将相同的代码抽取到一起：
 ```kotlin
 /*
-*利用局部函数抽取相同的逻辑，去除重复的代码
+* 利用局部函数抽取相同的逻辑，去除重复的代码
 * */
 fun saveUser2(user: User) {
     fun validate(value: String, fildName: String) {
@@ -665,7 +664,7 @@ fun saveUser2(user: User) {
     validate(user.name, "Name")
     validate(user.address, "Address")
     validate(user.email, "Email")
-    //save to db ...
+    // save to db ...
 }
 ```
 除了利用嵌套函数去抽取，此时，其实也可以用扩展函数来抽取，如下所示：
@@ -687,7 +686,7 @@ fun User.validateAll() {
 
 fun saveUser3(user: User) {
     user.validateAll()
-    //save to db ...
+    // save to db ...
 }
 ```
 
@@ -695,7 +694,7 @@ fun saveUser3(user: User) {
 在java中要声明一个model类需要实现很多的代码，首先需要将变量声明为private，然后需要实现get和set方法，还要实现对应的hashcode equals toString方法等，如下所示：
 详见案例代码[Tip8](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip8)
 ```java
-    public static class User{
+    public static class User {
 
         private String name;
         private int age;
@@ -879,7 +878,7 @@ lambda表达式可以简化我们的代码。以Android中常见的OnClickListen
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //handle click
+                // handle click
             }
         });
 ```
@@ -900,7 +899,7 @@ Java中需要声明一个匿名内部类去处理，这种情况可以用lambda�
     * */
     textView.setOnClickListener(object : android.view.View.OnClickListener {
         override fun onClick(v: android.view.View?) {
-            //handle click
+            // handle click
         }
     })
 
@@ -909,7 +908,7 @@ Java中需要声明一个匿名内部类去处理，这种情况可以用lambda�
     * */
     textView.setOnClickListener({ v ->
         {
-            //handle click
+            // handle click
         }
     })
 ```
@@ -919,7 +918,7 @@ Java中需要声明一个匿名内部类去处理，这种情况可以用lambda�
     * lambda的参数如果没有使用可以省略，省略的时候用it来替代
     * */
     textView.setOnClickListener({
-        //handle click
+        // handle click
     })
 ```
 lambda在参数的最后一个的情况可以将之提出去
@@ -928,7 +927,7 @@ lambda在参数的最后一个的情况可以将之提出去
     * lambda在参数的最后一个的情况可以将之提出去
     * */
     textView.setOnClickListener() {
-        //handle click
+        // handle click
     }
 ```
 lambda提出去之后，函数如果没有其他参数括号可以省略
@@ -937,7 +936,7 @@ lambda提出去之后，函数如果没有其他参数括号可以省略
     * lambda提出去之后，函数如果没有其他参数括号可以省略
     * */
     textView.setOnClickListener {
-        //handle click
+        // handle click
     }
 ```
 我们再看看如果自己去实现一个带lambda参数的函数应该怎么去定义：
@@ -957,7 +956,7 @@ class View {
     }
 
     fun doSth() {
-        //some case:
+        // some case:
         listener?.onClick()
     }
 
@@ -1111,19 +1110,19 @@ fun testNullType() {
     /*
     * a是非空类型，下面的给a赋值为null将会编译不通过
     * */
-    //a = null
+    // a = null
     a.length
 
     /*
-   * ？声明是可空类型，可以赋值为null
-   * */
+    * ？声明是可空类型，可以赋值为null
+    * */
     var b: String? = "bb"
     b = null
     
     /*
-   * b是可空类型，直接访问可空类型将编译不通过，需要通过?.或者!!.来访问
-   * */
-    //b.length
+    * b是可空类型，直接访问可空类型将编译不通过，需要通过?.或者!!.来访问
+    * */
+    // b.length
     b?.length
     b!!.length
 }
@@ -1353,14 +1352,14 @@ fun getShippingCostCalculator(delivery: Delivery): (Int) -> Double {
     return { 1.3 * it }
 }
 
-fun test05(){
+fun test05() {
     val calculator1 = getShippingCostCalculator(Delivery.EXPEDITED)
     val calculator2 = getShippingCostCalculator(Delivery.STANDARD)
     println("Ex costs ${calculator1(5)}")
     println("St costs ${calculator2(5)}")
 }
 ```
-如果是普通快递，采用6 + 2.1 * it的规则计算价格，如果是高级快递按照6 + 2.1 * it计算价格，根据不同的类型返回不同的计价函数。
+如果是普通快递，采用1.3 * it的规则计算价格，如果是高级快递按照6 + 2.1 * it计算价格，根据不同的类型返回不同的计价函数。
 
 ## Tip16- 用Lambda来简化策略模式
 策略模式是常见的模式之一，java的例子如下。
@@ -1433,7 +1432,6 @@ class Worker(private val strategy: () -> Unit) {
         strategy.invoke()
         println("END")
     }
-
 }
 
 /*
