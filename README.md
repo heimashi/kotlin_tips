@@ -1,8 +1,8 @@
 # 怎么用Kotlin去提高生产力：Kotlin Tips
 
-汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个小点tip都有详细的说明和案例代码，争取把每个tip分析得清楚易懂，会不断的更新维护tips，欢迎fork进来加入我们一起来维护，有问题的话欢迎提Issues。
+汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个tip都有详细的说明和案例代码，争取把每个tip分析得清楚易懂，会不断的更新维护tips，欢迎fork进来加入我们一起来维护，有问题的话欢迎提Issues。
 
-- 推荐一个Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin),用kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、文字log、App启动时间、Activity启动时间
+- 推荐一个Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin),用kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、App启动时间、Activity启动时间、文字Log
 
 
 ## Tip1- 更简洁的字符串
@@ -970,7 +970,7 @@ class View {
 ```
 在函数参数中需要声明lambda的类型后，再调用该函数的时候就可以传入一个lambda表达式了。
 
-## Tip11- with语句来简化代码
+## Tip11- with函数来简化代码
 
 - with 函数原型：
 ```kotlin
@@ -1048,7 +1048,7 @@ fun alphabet4(): String {
 ```
 像上面这样，我们可以把同一个变量的显式调用从5次变为0次，发现Kotlin的魅力了吧。
 
-## Tip12- apply语句来简化代码
+## Tip12- apply函数来简化代码
 
 - apply 函数原型：
 ```kotlin
