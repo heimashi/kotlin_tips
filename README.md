@@ -358,8 +358,7 @@ public static final void setLastChar(@NotNull StringBuilder $receiver, char valu
 函数内部可以访问公有的方法和属性。顶层的扩展函数是static的，**不能被override**
 - 从上面转换的源码其实可以看到**扩展函数和扩展属性适用的地方和缺陷**：
     - 扩展函数和扩展属性内**只能访问到类的公有方法和属性**，私有的和protected是访问不了的
-    - 扩展函数**不是真的修改了原来的类**，定义一个扩展函数不是将新成员函数插入到类中，扩展函数的类型是"静态的"，不是在运行时决定类型，案例代码[StaticllyExtension.kt](https://github
-    .com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/StaticllyExtension.kt)
+    - 扩展函数**不是真的修改了原来的类**，定义一个扩展函数不是将新成员函数插入到类中，扩展函数的类型是"静态的"，不是在运行时决定类型，案例代码[StaticllyExtension.kt](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/StaticllyExtension.kt)
     ```kotlin
     open class C
     
@@ -408,8 +407,7 @@ public static final void setLastChar(@NotNull StringBuilder $receiver, char valu
     ```
     
 - 声明扩展函数作为类的成员变量
-上面的例子扩展函数是作为顶层函数，如果把扩展函数申明为类的成员变量，即扩展函数的作用域就在类的内部有效，案例代码[ExtensionsAsMembers.kt](https://github
-                                                        .com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/ExtensionsAsMembers.kt)
+上面的例子扩展函数是作为顶层函数，如果把扩展函数申明为类的成员变量，即扩展函数的作用域就在类的内部有效，案例代码[ExtensionsAsMembers.kt](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/ExtensionsAsMembers.kt)
 ```kotlin
 open class D {
 }
