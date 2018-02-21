@@ -359,55 +359,55 @@ public static final void setLastChar(@NotNull StringBuilder $receiver, char valu
 - 从上面转换的源码其实可以看到**扩展函数和扩展属性适用的地方和缺陷**：
     - 扩展函数和扩展属性内**只能访问到类的公有方法和属性**，私有的和protected是访问不了的
     - 扩展函数**不是真的修改了原来的类**，定义一个扩展函数不是将新成员函数插入到类中，扩展函数的类型是"静态的"，不是在运行时决定类型，案例代码[StaticllyExtension.kt](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/StaticllyExtension.kt)
-    ```kotlin
-    open class C
+        ```kotlin
+        open class C
     
-    class D : C()
+        class D : C()
     
-    fun C.foo() = "c"
+        fun C.foo() = "c"
     
-    fun D.foo() = "d"
+        fun D.foo() = "d"
     
-    /*
-    * https://kotlinlang.org/docs/reference/extensions.html
-    * Extensions do not actually modify classes they extend. By defining an extension, you do not insert new members into a class,
-    * but merely make new functions callable with the dot-notation on variables of this type. Extension functions are
-    * dispatched statically.
-    * */
-    fun printFoo(c: C) {
-        println(c.foo())
-    }
+        /*
+        * https://kotlinlang.org/docs/reference/extensions.html
+        * Extensions do not actually modify classes they extend. By defining an extension, you do not insert new members into a class,
+        * but merely make new functions callable with the dot-notation on variables of this type. Extension functions are
+        * dispatched statically.
+        * */
+        fun printFoo(c: C) {
+          println(c.foo())
+        }
     
-    fun testStatically() {
-        printFoo(C()) // print c
-        printFoo(D()) // also print c
-    }
-    ```
-    上面的案例中即使调用printFoo(D())还是打印出c，而不是d。转成java中会看到下面的代码，D类型在调用的时候会强制转换为C类型：
-    ```java
-    public static final String foo(@NotNull C $receiver) {
-       Intrinsics.checkParameterIsNotNull($receiver, "$receiver");
-       return "c";
-    }
+        fun testStatically() {
+          printFoo(C()) // print c
+          printFoo(D()) // also print c
+        }
+        ```
+        上面的案例中即使调用printFoo(D())还是打印出c，而不是d。转成java中会看到下面的代码，D类型在调用的时候会强制转换为C类型：
+        ```java
+        public static final String foo(@NotNull C $receiver) {
+          Intrinsics.checkParameterIsNotNull($receiver, "$receiver");
+          return "c";
+        }
  
-    public static final String foo(@NotNull D $receiver) {
-       Intrinsics.checkParameterIsNotNull($receiver, "$receiver");
-       return "d";
-    }
+        public static final String foo(@NotNull D $receiver) {
+          Intrinsics.checkParameterIsNotNull($receiver, "$receiver");
+          return "d";
+        }
  
-    public static final void printFoo(@NotNull C c) {
-       Intrinsics.checkParameterIsNotNull(c, "c");
-       String var1 = foo(c);
-       System.out.println(var1);
-    }
-    public static final void testStatically() {
-        printFoo(new C());
-        printFoo((C)(new D()));
-    }
-    ```
+        public static final void printFoo(@NotNull C c) {
+          Intrinsics.checkParameterIsNotNull(c, "c");
+          String var1 = foo(c);
+          System.out.println(var1);
+        }
+        public static final void testStatically() {
+          printFoo(new C());
+          printFoo((C)(new D()));
+        }
+        ```
     
 - 声明扩展函数作为类的成员变量
-上面的例子扩展函数是作为顶层函数，如果把扩展函数申明为类的成员变量，即扩展函数的作用域就在类的内部有效，案例代码[ExtensionsAsMembers.kt](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/ExtensionsAsMembers.kt)
+    - 上面的例子扩展函数是作为顶层函数，如果把扩展函数申明为类的成员变量，即扩展函数的作用域就在类的内部有效，案例代码[ExtensionsAsMembers.kt](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/ExtensionsAsMembers.kt)
 ```kotlin
 open class D {
 }
