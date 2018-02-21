@@ -7,6 +7,7 @@ import com.sw.kotlin.tip11.alphabet
 import com.sw.kotlin.tip14.testOperator
 import com.sw.kotlin.tip16.testStrategy
 import com.sw.kotlin.tip3.printList
+import com.sw.kotlin.tip4.testAsMembers
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -57,4 +58,8 @@ class ExampleUnitTest {
         testStrategy()
     }
 
+    @Test
+    fun test07(){
+        testAsMembers()
+    }
 }
