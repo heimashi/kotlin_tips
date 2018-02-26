@@ -1225,7 +1225,7 @@ fun testNullType() {
       而且代码中一定不用出现下面这种代码，会让代码可读性很差而且如果有空指针异常，我们也不能马上发现是哪空了：
 ```kotlin
     /*
-    * 不用链式的连续用!!.
+    * 不推荐这样的写法：链式的连续用!!.
     * */
     val user = User()
     user!!.name!!.subSequence(0,5)!!.length
@@ -1284,9 +1284,9 @@ inline fun <T, R> T.let(block: (T) -> R): R = block(this)
 fun testElvis(input: String?, user: User?) {
     val a: Int?
     if (input == null) {
-        a = input?.length
+        a = -1
     } else {
-        a = -1;
+        a = input?.length
     }
 
     if (user == null) {
@@ -1297,7 +1297,7 @@ fun testElvis(input: String?, user: User?) {
     }
 }
 ```
-Elvis操作符?:能够简化上面的操作，?:符号会在对于空的情况才会进行下面的处理，**跟?.let正好相反**，例如我们可以用两行代码来简化上面从操作：
+Elvis操作符?:能够简化上面的操作，?:符号会在符号左边为空的情况才会进行下面的处理，不为空则不会有任何操作。**跟?.let正好相反**，例如我们可以用两行代码来简化上面从操作：
 ```kotlin
 /**
  * Elvis操作符 ?: 简化对空值的处理

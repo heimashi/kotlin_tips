@@ -25,7 +25,7 @@ fun testNullType() {
     b!!.length
 
     /*
-    * 不用链式的连续用!!.
+    * 不推荐这样的写法：链式的连续用!!.
     * */
     val user = User()
     user!!.name!!.subSequence(0, 5)!!.length
@@ -68,9 +68,9 @@ fun testNullType2() {
 fun testElvis(input: String?, user: User?) {
     val a: Int?
     if (input == null) {
-        a = input?.length
+        a = -1
     } else {
-        a = -1;
+        a = input.length
     }
 
     if (user == null) {
