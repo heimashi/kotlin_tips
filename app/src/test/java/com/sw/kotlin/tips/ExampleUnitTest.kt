@@ -8,6 +8,7 @@ import com.sw.kotlin.tip14.testOperator
 import com.sw.kotlin.tip16.testStrategy
 import com.sw.kotlin.tip3.printList
 import com.sw.kotlin.tip4.testAsMembers
+import com.sw.kotlin.tip5.testLateInit
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -61,5 +62,10 @@ class ExampleUnitTest {
     @Test
     fun test07(){
         testAsMembers()
+    }
+
+    @Test
+    fun test08(){
+        testLateInit()
     }
 }

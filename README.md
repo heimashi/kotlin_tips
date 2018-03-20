@@ -717,7 +717,7 @@ public final class Tip6Fragment extends Fragment {
    }
 }
 ```
-跟Activity中类似，会有一个View的HashMap，关键不同的地方在_$_findCachedViewById里面，需要getView或者当前Fragment的View，
+跟Activity中类似，会有一个View的HashMap，关键不同的地方在_$_findCachedViewById里面，需要getView获得当前Fragment的View，
 故在onViewCreated中getView还是空的，原理就好理解了。另外在onDestroyView会调用_$_clearFindViewByIdCache方法清掉缓存。
 
 ## Tip7- 利用局部函数抽取重复代码

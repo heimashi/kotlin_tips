@@ -27,5 +27,6 @@ val user1: User by lazy {
 lateinit var user2: User
 
 fun testLateInit() {
+    //println(user2.age)
     user2 = User("Lily", 14)
 }
