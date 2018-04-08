@@ -2,7 +2,7 @@
 
 汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个tip都有详细的说明和案例代码，争取把每个tip分析得清楚易懂，会不断的更新维护tips，欢迎fork进来加入我们一起来维护，有问题的话欢迎提Issues。
 
-- 推荐一个Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin),用kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、App启动时间、Activity启动时间、文字Log
+- 推荐一个Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin)，用Kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、App启动时间、Activity启动时间、文字Log
 
 
 ## Tip1- 更简洁的字符串
@@ -254,7 +254,7 @@ fun printList3() {
 这样有了默认参数后，在使用函数时，如果不传入该参数，默认会使用默认的值，这样可以避免Java中大量的函数重载。
 
 ## Tip4- 扩展函数和属性
-扩展函数和属性是Kotlin非常方便实用的一个功能，它可以让我们随意的扩展第三方的库，你如果觉得别人给的SDK的api不好用，或者不能满足你的需求，这时候你可以用扩展函数完全去自定义。
+扩展函数和扩展属性是Kotlin非常方便实用的一个功能，它可以让我们随意的扩展第三方的库，你如果觉得别人给的SDK的Api不好用，或者不能满足你的需求，这时候你可以用扩展函数完全去自定义。
 例如String类中，我们想获取最后一个字符，String中没有这样的直接函数，你可以用.后声明这样一个扩展函数：
 详见案例代码[KotlinTip4](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/KotlinTip4.kt)
 ```kotlin
@@ -642,8 +642,8 @@ public final class KotlinTip6 extends Activity {
 如上面的代码所示，在编译阶段，插件会帮我们生成视图缓存，视图由一个Hashmap结构的_$_findViewCache变量缓存，
 会根据对应的id先从缓存里查找，缓存没命中再去真正调用findViewById查找出来，再存在HashMap中。
 
-#### 在fragment中findViewByID
-在fragment中也类似，有一点区别，例子如下：
+#### 在Fragment中findViewByID
+在Fragment中也类似，但有一点需要注意但地方，例子如下：
 ```kotlin
 class Tip6Fragment : Fragment() {
 
