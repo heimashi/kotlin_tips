@@ -2,8 +2,9 @@
 
 汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个tip都有详细的说明和案例代码，争取把每个tip分析得清楚易懂，会不断的更新维护tips，欢迎fork进来加入我们一起来维护，有问题的话欢迎提Issues。
 
-- 推荐一个Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin)，用Kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、App启动时间、Activity启动时间、文字Log
-- 推荐一个性能优化的项目[and-load-aot](https://github.com/heimashi/and-load-aot)，通过提前加载数据来提高页面启动速度，利用编译时注解生成加载方法的路由，在Activity启动前就去加载数据
+- 推荐：Android模块化通信项目[module-service-manager](https://github.com/heimashi/module-service-manager)
+- 推荐：Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin)，用Kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、App启动时间、Activity启动时间、文字Log
+- 推荐：数据预加载项目[and-load-aot](https://github.com/heimashi/and-load-aot)，通过提前加载数据来提高页面启动速度，利用编译时注解生成加载方法的路由，在Activity启动前就去加载数据
 
 
 ## Tip1- 更简洁的字符串
@@ -194,6 +195,7 @@ fun getPoint2(grade: Int) = when {
 
 ## Tip3- 更好调用的函数：显式参数名/默认参数值
 
+#### 显式参数名
 Kotlin的函数更加好调用，主要是表现在两个方面：1，显式的**标示参数名**，可以方便代码阅读；2，函数可以有**默认参数值**，可以大大**减少Java中的函数重载**。
 例如现在需要实现一个工具函数，打印列表的内容：
 详见案例代码[KotlinTip3](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip3/KotlinTip3.kt)
@@ -226,6 +228,8 @@ fun printList() {
 ```
 如上面的代码所示，函数joinToString想要打印列表的内容，需要传入四个参数：列表、分隔符、前缀和后缀。
 由于参数很多，在后续使用该函数的时候不是很直观的知道每个参数是干什么用的，这时候可以显式的标明参数名称，增加代码可读性。
+
+#### 默认参数值
 同时，定义函数的时候还可以给函数默认的参数，如下所示：
 ```kotlin
 /*
@@ -253,6 +257,41 @@ fun printList3() {
 }
 ```
 这样有了默认参数后，在使用函数时，如果不传入该参数，默认会使用默认的值，这样可以避免Java中大量的函数重载。
+
+#### @JvmOverloads
+在java与kotlin的混合项目中，会发现用kotlin实现的带默认参数的函数，在java中去调用的化就不能利用这个特性了，还是需要给所有参数赋值，像下面java这样：
+```java
+List<Integer> arr = new ArrayList<Integer>() {{add(2);add(4);add(0);}};
+String res = joinToString2(arr, "-", "", "");
+System.out.println(res);
+```
+这时候可以在kotlin的函数前添加注解@JvmOverloads，添加注解后翻译为class的时候kotlin会帮你去生成多个函数实现函数重载，kotlin代码如下：
+```kotlin
+/*
+* 通过注解@JvmOverloads解决java调用kotlin时不支持默认参数的问题
+* */
+@JvmOverloads
+fun <T> joinToString2New(collection: Collection<T>,
+                         separator: String = ", ",
+                         prefix: String = "",
+                         postfix: String = ""): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in collection.withIndex()) {
+        if (index > 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+```
+这样以后，java调用kotlin的带默认参数的函数就跟kotlin一样方便了：
+```java
+List<Integer> arr = new ArrayList<Integer>() {{add(2);add(4);add(0);}};
+String res = joinToString2New(arr, "-");
+System.out.println(res);
+String res2 = joinToString2New(arr, "-", "=>");
+System.out.println(res2);
+```
 
 ## Tip4- 扩展函数和属性
 扩展函数和扩展属性是Kotlin非常方便实用的一个功能，它可以让我们随意的扩展第三方的库，你如果觉得别人给的SDK的Api不好用，或者不能满足你的需求，这时候你可以用扩展函数完全去自定义。

@@ -51,3 +51,21 @@ fun printList3() {
     val list = listOf(2, 4, 0)
     println(joinToString2(list, " - "))
 }
+
+
+/*
+* 通过注解@JvmOverloads解决java调用kotlin时不支持默认参数的问题
+* */
+@JvmOverloads
+fun <T> joinToString2New(collection: Collection<T>,
+                         separator: String = ", ",
+                         prefix: String = "",
+                         postfix: String = ""): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in collection.withIndex()) {
+        if (index > 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
