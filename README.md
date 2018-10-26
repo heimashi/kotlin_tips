@@ -2,7 +2,7 @@
 
 汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个tip都有详细的说明和案例代码，争取把每个tip分析得清楚易懂，会不断的更新维护tips，欢迎fork进来加入我们一起来维护，有问题的话欢迎提Issues。
 
-- 推荐：Android模块化通信项目[module-service-manager](https://github.com/heimashi/module-service-manager)
+- 推荐：Android模块化通信项目[module-service-manager](https://github.com/heimashi/module-service-manager)，支持模块间功能服务/View/Fragment的通信调用等，通过注解标示模块内需要暴露出来的服务和View，然后gradle插件会通过transform来hook编译过程，扫描出注解信息后再利用asm生成代码来向服务管理中心注册对应的服务和View，之后模块间就可以利用框架这个桥梁来调用和通信了
 - 推荐：Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin)，用Kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、App启动时间、Activity启动时间、文字Log
 - 推荐：数据预加载项目[and-load-aot](https://github.com/heimashi/and-load-aot)，通过提前加载数据来提高页面启动速度，利用编译时注解生成加载方法的路由，在Activity启动前就去加载数据
 
