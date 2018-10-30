@@ -10,15 +10,27 @@
 ****
 ## 目录
 * [Tip1-更简洁的字符串](#Tip1-更简洁的字符串)
-    * 1、三个引号 2、字符串模版
+    * 1、三个引号  2、字符串模版
 * [Tip2-Kotlin中大多数控制结构都是表达式](#Tip2-Kotlin中大多数控制结构都是表达式)
-    * 1、语句和表达式 2、if 3、when
+    * 1、语句和表达式  2、if  3、when
 * [Tip3-更好调用的函数：显式参数名及默认参数值](#Tip3-更好调用的函数-显式参数名及默认参数值)
-    * 1、显式参数名 2、默认参数值 3、@JvmOverloads 
+    * 1、显式参数名  2、默认参数值  3、@JvmOverloads 
 * [Tip4-扩展函数和属性](#Tip4-扩展函数和属性)
-    * 1、扩展函数 2、扩展属性
+    * 1、扩展函数  2、扩展属性
 * [Tip5-懒初始化bylazy和延迟初始化lateinit](#Tip5-懒初始化bylazy和延迟初始化lateinit)
-
+    * 1、by lazy  2、lateinit
+* [Tip6-不用再手写findViewById](#Tip6-不用再手写findViewById)
+    * 1、Activity  2、Fragment  
+* [Tip7-利用局部函数抽取重复代码](#Tip7-利用局部函数抽取重复代码)  
+* [Tip8-使用数据类来快速实现model类](#Tip8-使用数据类来快速实现model类)  
+* [Tip9-用类委托来快速实现装饰器模式](#Tip9-用类委托来快速实现装饰器模式) 
+* [Tip10-Lambda表达式简化OnClickListener](#Tip10-Lambda表达式简化OnClickListener)
+* [Tip11-with函数来简化代码](#Tip11-with函数来简化代码) 
+* [Tip12-apply函数来简化代码](#Tip12-apply函数来简化代码) 
+* [Tip13-在编译阶段避免掉NullPointerException](#Tip13-在编译阶段避免掉NullPointerException) 
+* [Tip14-运算符重载](#Tip14-运算符重载) 
+* [Tip15-高阶函数简化代码](#Tip15-高阶函数简化代码) 
+* [Tip16-用Lambda来简化策略模式](#Tip16-用Lambda来简化策略模式) 
 ****
 
 ## Tip1-更简洁的字符串
@@ -555,6 +567,7 @@ fun Context.dip2px(value: Int): Int = (value * resources.displayMetrics.density)
 ```
 
 ## Tip5-懒初始化bylazy和延迟初始化lateinit
+[回到目录](#目录)
 
 #### 懒初始化by lazy
 懒初始化是指推迟一个变量的初始化时机，变量在使用的时候才去实例化，这样会更加的高效。因为我们通常会遇到这样的情况，一个变量直到使用时才需要被初始化，或者仅仅是它的初始化依赖于某些无法立即获得的上下文。
@@ -599,7 +612,10 @@ fun testLateInit() {
 - by lazy 修饰val的变量
 - lateinit 修饰var的变量，且变量是非空的类型
 
-## Tip6- 不用再手写findViewById
+## Tip6-不用再手写findViewById
+[回到目录](#目录)
+
+#### 在Activity中使用
 在Android的View中，会有很多代码是在声明一个View，然后通过findViewById后从xml中实例化赋值给对应的View。在kotlin中可以完全解放出来了，利用kotlin-android-extensions插件，不用再手写findViewById。步骤如下：
 详见案例代码[KotlinTip6](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip6/KotlinTip6.kt)
 - 步骤1，在项目的gradle中 apply plugin: 'kotlin-android-extensions'
@@ -787,7 +803,9 @@ public final class Tip6Fragment extends Fragment {
 跟Activity中类似，会有一个View的HashMap，关键不同的地方在_$_findCachedViewById里面，需要getView获得当前Fragment的View，
 故在onViewCreated中getView还是空的，原理就好理解了。另外在onDestroyView会调用_$_clearFindViewByIdCache方法清掉缓存。
 
-## Tip7- 利用局部函数抽取重复代码
+## Tip7-利用局部函数抽取重复代码
+[回到目录](#目录)
+
 Kotlin中提供了函数的嵌套，在函数内部还可以定义新的函数。这样我们可以在函数中嵌套这些提前的函数，来抽取重复代码。如下面的案例所示:
 详见案例代码[KotlinTip7](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip7/KotlinTip7.kt)
 ```kotlin
@@ -847,7 +865,9 @@ fun saveUser3(user: User) {
 }
 ```
 
-## Tip8- 使用数据类来快速实现model类
+## Tip8-使用数据类来快速实现model类
+[回到目录](#目录)
+
 在java中要声明一个model类需要实现很多的代码，首先需要将变量声明为private，然后需要实现get和set方法，还要实现对应的hashcode equals toString方法等，如下所示：
 详见案例代码[Tip8](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip8)
 ```java
@@ -938,7 +958,9 @@ data class User2(val name: String, val age: Int, val gender: Int, var address: S
 对于Kotlin中的类，会为它的参数自动实现get set方法。而如果加上data关键字，还会自动生成equals hashcode toString。原理其实数据类中的大部分代码都是模版代码，Kotlin聪明的将这个模版代码的实现放在了编译器处理的阶段。
 
 
-## Tip9- 用类委托来快速实现装饰器模式
+## Tip9-用类委托来快速实现装饰器模式
+[回到目录](#目录)
+
 通过继承的实现容易导致脆弱性，例如如果需要修改其他类的一些行为，这时候Java中的一种策略是采用**装饰器模式**：创建一个新类，实现与原始类一样的接口并将原来的类的实例作为一个成员变量。
 与原始类拥有相同行为的方法不用修改，只需要直接转发给原始类的实例。如下所示：
 详见案例代码[KotlinTip9](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip9/KotlinTip9.kt)
@@ -1027,7 +1049,9 @@ class CountingSet2<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutab
 ```
 通过by关键字将接口的实现委托给innerSet成员变量，需要修改的函数再去override就可以了，通过类委托将10行代码就可以实现上面接近100行的功能，简洁明了，去掉了模版代码。
 
-## Tip10- Lambda表达式简化OnClickListener
+## Tip10-Lambda表达式简化OnClickListener
+[回到目录](#目录)
+
 详见案例代码[KotlinTip10](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip10/KotlinTip10.kt)
 lambda表达式可以简化我们的代码。以Android中常见的OnClickListener来说明，在Java中我们一般这样设置：
 ```java
@@ -1127,7 +1151,8 @@ class View {
 ```
 在函数参数中需要声明lambda的类型后，再调用该函数的时候就可以传入一个lambda表达式了。
 
-## Tip11- with函数来简化代码
+## Tip11-with函数来简化代码
+[回到目录](#目录)
 
 - with 函数原型：
 ```kotlin
@@ -1205,7 +1230,8 @@ fun alphabet4(): String {
 ```
 像上面这样，我们可以把同一个变量的显式调用从5次变为0次，发现Kotlin的魅力了吧。
 
-## Tip12- apply函数来简化代码
+## Tip12-apply函数来简化代码
+[回到目录](#目录)
 
 - apply 函数原型：
 ```kotlin
@@ -1255,7 +1281,8 @@ fun testApply(context: Context) {
 ```
 在类实例化的时候，就可以通过apply把需要初始化的步骤全部实现，非常的简洁
 
-## Tip13- 在编译阶段避免掉NullPointerException
+## Tip13-在编译阶段避免掉NullPointerException
+[回到目录](#目录)
 
 NullPointerException是Java程序员非常头痛的一个问题，我们知道Java 中分受检异常和非受检异常，NullPointerException是非受检异常，也就是说NullPointerException不需要显示的去catch住，
 往往在运行期间，程序就可能报出一个NullPointerException然后crash掉，Kotlin作为一门高效安全的语言，它尝试在编译阶段就把空指针问题显式的检测出来，把问题留在了编译阶段，让程序更加健壮。
@@ -1376,7 +1403,8 @@ fun testElvis2(input: String?, user: User?) {
 ```
 
 
-## Tip14- 运算符重载
+## Tip14-运算符重载
+[回到目录](#目录)
 
 Kotlin支持对运算符的重载，这对于对一些对象的操作更加灵活直观。
 
@@ -1426,7 +1454,8 @@ fun testOperator() {
 
 
 
-## Tip15- 高阶函数简化代码
+## Tip15-高阶函数简化代码
+[回到目录](#目录)
 
 - 高阶函数：以另一个函数作为参数或者返回值的函数
 - 函数类型   
@@ -1518,7 +1547,9 @@ fun test05() {
 ```
 如果是普通快递，采用1.3 * it的规则计算价格，如果是高级快递按照6 + 2.1 * it计算价格，根据不同的类型返回不同的计价函数。
 
-## Tip16- 用Lambda来简化策略模式
+## Tip16-用Lambda来简化策略模式
+[回到目录](#目录)
+
 策略模式是常见的模式之一，java的例子如下。
 详见案例代码[Tip16](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip16)
 ```java
