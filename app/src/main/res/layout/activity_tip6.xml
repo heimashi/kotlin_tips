@@ -7,16 +7,20 @@
     <TextView
         android:id="@+id/tip6Tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:background="@color/colorPrimary"
+        android:layout_height="50dp" />
 
     <ImageView
         android:id="@+id/tip6Img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="50dp" />
 
     <Button
         android:id="@+id/tip6Btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="50dp" />
+
+    <include
+        layout="@layout/layout_tip6"/>
 
 </LinearLayout>

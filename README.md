@@ -20,14 +20,16 @@
 * [Tip5-懒初始化bylazy和延迟初始化lateinit](#Tip5-懒初始化bylazy和延迟初始化lateinit)
     * 1、by lazy  2、lateinit
 * [Tip6-不用再手写findViewById](#Tip6-不用再手写findViewById)
-    * 1、Activity  2、Fragment  
-* [Tip7-利用局部函数抽取重复代码](#Tip7-利用局部函数抽取重复代码)  
+    * 1、Activity  2、子View或者include标签  3、Fragment
+* [Tip7-利用局部函数抽取重复代码](#Tip7-利用局部函数抽取重复代码)
+    * 1、局部函数  2、扩展函数
 * [Tip8-使用数据类来快速实现model类](#Tip8-使用数据类来快速实现model类)  
 * [Tip9-用类委托来快速实现装饰器模式](#Tip9-用类委托来快速实现装饰器模式) 
 * [Tip10-Lambda表达式简化OnClickListener](#Tip10-Lambda表达式简化OnClickListener)
 * [Tip11-with函数来简化代码](#Tip11-with函数来简化代码) 
 * [Tip12-apply函数来简化代码](#Tip12-apply函数来简化代码) 
-* [Tip13-在编译阶段避免掉NullPointerException](#Tip13-在编译阶段避免掉NullPointerException) 
+* [Tip13-在编译阶段避免掉NullPointerException](#Tip13-在编译阶段避免掉NullPointerException)
+    * 1、可空和不可空类型  2、let  3、Elvis操作符
 * [Tip14-运算符重载](#Tip14-运算符重载) 
 * [Tip15-高阶函数简化代码](#Tip15-高阶函数简化代码) 
 * [Tip16-用Lambda来简化策略模式](#Tip16-用Lambda来简化策略模式) 
@@ -725,7 +727,36 @@ public final class KotlinTip6 extends Activity {
 如上面的代码所示，在编译阶段，插件会帮我们生成视图缓存，视图由一个Hashmap结构的_$_findViewCache变量缓存，
 会根据对应的id先从缓存里查找，缓存没命中再去真正调用findViewById查找出来，再存在HashMap中。
 
-#### 在Fragment中findViewByID
+#### 子View或者include标签中findViewById
+子子View或者include标签中，同样可以省略findViewById，但需要主要默认的activity的布局import是不会将这个include的View引入进来
+```xml
+<include layout="@layout/layout_tip6"/>
+
+//include layout
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/test_inside_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"/>
+
+</FrameLayout>
+```
+需要我们引入对应的View的id，像这样import kotlinx.android.synthetic.main.layout_tip6.*
+```kotlin
+//导入插件生成的View
+import kotlinx.android.synthetic.main.activity_tip6.*
+//include layout的View
+import kotlinx.android.synthetic.main.layout_tip6.*
+
+test_inside_id.text = "Test include"
+```
+
+#### 在Fragment中findViewById
 在Fragment中也类似，但有一点需要注意但地方，例子如下：
 ```kotlin
 class Tip6Fragment : Fragment() {
@@ -806,6 +837,7 @@ public final class Tip6Fragment extends Fragment {
 ## Tip7-利用局部函数抽取重复代码
 [回到目录](#目录)
 
+#### 局部函数抽取代码
 Kotlin中提供了函数的嵌套，在函数内部还可以定义新的函数。这样我们可以在函数中嵌套这些提前的函数，来抽取重复代码。如下面的案例所示:
 详见案例代码[KotlinTip7](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip7/KotlinTip7.kt)
 ```kotlin
@@ -842,6 +874,8 @@ fun saveUser2(user: User) {
     // save to db ...
 }
 ```
+
+#### 扩展函数抽取代码
 除了利用嵌套函数去抽取，此时，其实也可以用扩展函数来抽取，如下所示：
 ```kotlin
 /*
@@ -1284,6 +1318,7 @@ fun testApply(context: Context) {
 ## Tip13-在编译阶段避免掉NullPointerException
 [回到目录](#目录)
 
+#### 可空类型和不可空类型
 NullPointerException是Java程序员非常头痛的一个问题，我们知道Java 中分受检异常和非受检异常，NullPointerException是非受检异常，也就是说NullPointerException不需要显示的去catch住，
 往往在运行期间，程序就可能报出一个NullPointerException然后crash掉，Kotlin作为一门高效安全的语言，它尝试在编译阶段就把空指针问题显式的检测出来，把问题留在了编译阶段，让程序更加健壮。
 详见案例代码[KotlinTip13](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip13/KotlinTip13.kt)

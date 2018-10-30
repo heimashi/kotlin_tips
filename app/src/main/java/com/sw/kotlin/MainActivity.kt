@@ -3,6 +3,7 @@ package com.sw.kotlin
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.sw.kotlin.tip4.invokeActivity
+import com.sw.kotlin.tip6.KotlinTip6
 import com.sw.kotlin.tip6.Tip6Activity
 import com.sw.kotlin.tips.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,6 +15,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         toTip6.setOnClickListener {
             invokeActivity(Tip6Activity::class.java)
+        }
+        toTip6_2.setOnClickListener {
+            invokeActivity(KotlinTip6::class.java)
         }
     }
 }

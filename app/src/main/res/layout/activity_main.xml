@@ -11,4 +11,11 @@
         android:layout_marginTop="10dp"
         android:text="to Tip6" />
 
+    <Button
+        android:id="@+id/toTip6_2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="to Tip6 2" />
+
 </LinearLayout>

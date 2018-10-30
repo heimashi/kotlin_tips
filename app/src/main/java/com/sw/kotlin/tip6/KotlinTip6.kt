@@ -4,10 +4,11 @@ import android.app.Activity
 import android.os.Bundle
 import com.sw.kotlin.tip4.invokeActivity
 import com.sw.kotlin.tips.R
-/*
-* 导入插件生成的View
-* */
+
+//导入插件生成的View
 import kotlinx.android.synthetic.main.activity_tip6.*
+//include layout的View
+import kotlinx.android.synthetic.main.layout_tip6.*
 
 
 class KotlinTip6 : Activity() {
@@ -23,6 +24,8 @@ class KotlinTip6 : Activity() {
         tip6Btn.setOnClickListener {
             test()
         }
+
+        test_inside_id.text = "Test include"
     }
 
     private fun test() {
