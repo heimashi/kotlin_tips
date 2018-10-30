@@ -1,4 +1,5 @@
-# 怎么用Kotlin去提高生产力：Kotlin Tips
+怎么用Kotlin去提高生产力：Kotlin Tips
+==================================
 
 汇总Kotlin相对于Java的优势，以及怎么用Kotlin去简洁、务实、高效、安全的开发，每个tip都有详细的说明和案例代码，争取把每个tip分析得清楚易懂，会不断的更新维护tips，欢迎fork进来加入我们一起来维护，有问题的话欢迎提Issues。
 
@@ -6,8 +7,18 @@
 - 推荐：Kotlin的实践项目[debug_view_kotlin](https://github.com/heimashi/debug_view_kotlin)，用Kotlin实现的Android浮层调试控制台，实时的显示内存、FPS、App启动时间、Activity启动时间、文字Log
 - 推荐：数据预加载项目[and-load-aot](https://github.com/heimashi/and-load-aot)，通过提前加载数据来提高页面启动速度，利用编译时注解生成加载方法的路由，在Activity启动前就去加载数据
 
+****
+## 目录
+* [Tip1-更简洁的字符串](#Tip1-更简洁的字符串)
+* [Tip2-Kotlin中大多数控制结构都是表达式](#Tip2-Kotlin中大多数控制结构都是表达式)
+* [Tip3-更好调用的函数：显式参数名及默认参数值](#Tip3-更好调用的函数：显式参数名及默认参数值)
+    * 显式参数名
+    * 默认参数值
+    * @JvmOverloads
+* [Tip4-扩展函数和属性](#Tip4-扩展函数和属性)
+****
 
-## Tip1- 更简洁的字符串
+## Tip1-更简洁的字符串
 
 详见案例代码[KotlinTip1](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip1/KotlinTip1.kt)
 
@@ -73,7 +84,7 @@ fun testString3() {
 }
 ```
 
-## Tip2- Kotlin中大多数控制结构都是表达式
+## Tip2-Kotlin中大多数控制结构都是表达式
 
 首先，需要弄清楚一个概念**语句和表达式**，然后会介绍控制结构表达式的优点：**简洁**
 #### 语句和表达式是什么？
@@ -193,7 +204,7 @@ fun getPoint2(grade: Int) = when {
 }
 ```
 
-## Tip3- 更好调用的函数：显式参数名/默认参数值
+## Tip3-更好调用的函数：显式参数名及默认参数值
 
 #### 显式参数名
 Kotlin的函数更加好调用，主要是表现在两个方面：1，显式的**标示参数名**，可以方便代码阅读；2，函数可以有**默认参数值**，可以大大**减少Java中的函数重载**。
@@ -293,7 +304,7 @@ String res2 = joinToString2New(arr, "-", "=>");
 System.out.println(res2);
 ```
 
-## Tip4- 扩展函数和属性
+## Tip4-扩展函数和属性
 扩展函数和扩展属性是Kotlin非常方便实用的一个功能，它可以让我们随意的扩展第三方的库，你如果觉得别人给的SDK的Api不好用，或者不能满足你的需求，这时候你可以用扩展函数完全去自定义。
 例如String类中，我们想获取最后一个字符，String中没有这样的直接函数，你可以用.后声明这样一个扩展函数：
 详见案例代码[KotlinTip4](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/KotlinTip4.kt)
