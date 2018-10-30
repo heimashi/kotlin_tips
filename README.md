@@ -10,16 +10,21 @@
 ****
 ## 目录
 * [Tip1-更简洁的字符串](#Tip1-更简洁的字符串)
+    * 1、三个引号 2、字符串模版
 * [Tip2-Kotlin中大多数控制结构都是表达式](#Tip2-Kotlin中大多数控制结构都是表达式)
-* [Tip3-更好调用的函数：显式参数名及默认参数值](#Tip3-更好调用的函数：显式参数名及默认参数值)
-    * 显式参数名
-    * 默认参数值
-    * @JvmOverloads
+    * 1、语句和表达式 2、if 3、when
+* [Tip3-更好调用的函数：显式参数名及默认参数值](#Tip3-更好调用的函数-显式参数名及默认参数值)
+    * 1、显式参数名 2、默认参数值 3、@JvmOverloads 
 * [Tip4-扩展函数和属性](#Tip4-扩展函数和属性)
+    * 1、扩展函数 2、扩展属性
+* [Tip5-懒初始化bylazy和延迟初始化lateinit](#Tip5-懒初始化bylazy和延迟初始化lateinit)
+
 ****
 
 ## Tip1-更简洁的字符串
+[回到目录](#目录)
 
+#### 三个引号
 详见案例代码[KotlinTip1](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip1/KotlinTip1.kt)
 
 Kotlin中的字符串基本Java中的类似，有一点区别是加入了三个引号"""来方便长篇字符的编写。
@@ -61,6 +66,8 @@ fun testString() {
     println(js)
 }
 ```
+
+#### 字符串模版
 同时，Kotlin中引入了**字符串模版**，方便字符串的拼接，可以用$符号拼接变量和表达式
 ```kotlin
 /*
@@ -85,6 +92,7 @@ fun testString3() {
 ```
 
 ## Tip2-Kotlin中大多数控制结构都是表达式
+[回到目录](#目录)
 
 首先，需要弄清楚一个概念**语句和表达式**，然后会介绍控制结构表达式的优点：**简洁**
 #### 语句和表达式是什么？
@@ -204,7 +212,8 @@ fun getPoint2(grade: Int) = when {
 }
 ```
 
-## Tip3-更好调用的函数：显式参数名及默认参数值
+## Tip3-更好调用的函数-显式参数名及默认参数值
+[回到目录](#目录)
 
 #### 显式参数名
 Kotlin的函数更加好调用，主要是表现在两个方面：1，显式的**标示参数名**，可以方便代码阅读；2，函数可以有**默认参数值**，可以大大**减少Java中的函数重载**。
@@ -305,7 +314,11 @@ System.out.println(res2);
 ```
 
 ## Tip4-扩展函数和属性
+[回到目录](#目录)
+
 扩展函数和扩展属性是Kotlin非常方便实用的一个功能，它可以让我们随意的扩展第三方的库，你如果觉得别人给的SDK的Api不好用，或者不能满足你的需求，这时候你可以用扩展函数完全去自定义。
+
+#### 扩展函数
 例如String类中，我们想获取最后一个字符，String中没有这样的直接函数，你可以用.后声明这样一个扩展函数：
 详见案例代码[KotlinTip4](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip4/KotlinTip4.kt)
 ```kotlin
@@ -344,6 +357,8 @@ fun printList4() {
     println(list.joinToString3("/"))
 }
 ```
+
+#### 扩展属性
 除了扩展函数，还可以扩展属性，例如我想实现String和StringBuilder通过属性去直接获得最后字符：
 ```kotlin
 /*
@@ -539,7 +554,8 @@ val Context.screenHeight
 fun Context.dip2px(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 ```
 
-## Tip5- 懒初始化by lazy 和 延迟初始化lateinit
+## Tip5-懒初始化bylazy和延迟初始化lateinit
+
 #### 懒初始化by lazy
 懒初始化是指推迟一个变量的初始化时机，变量在使用的时候才去实例化，这样会更加的高效。因为我们通常会遇到这样的情况，一个变量直到使用时才需要被初始化，或者仅仅是它的初始化依赖于某些无法立即获得的上下文。
 详见案例代码[KotlinTip5](https://github.com/heimashi/kotlin_tips/blob/master/app/src/main/java/com/sw/kotlin/tip5/KotlinTip5.kt)
